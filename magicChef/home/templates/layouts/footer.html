@@ -1,0 +1,71 @@
+{% load static %}
+<div class="content has-text-centered">
+  <section class="section pt-10-tablet pb-12-tablet py-14-mobile has-background-grey-darker">
+    <div class="container">
+      <div class="columns is-4 is-align-items-center mb-10">
+        <div class="column is-4">
+          <ul class="is-flex-tablet">
+            <li class="mb-6 mb-0-tablet"><a class="title is-size-6 has-text-white" href="#">About</a></li>
+            <li class="ml-16-tablet"><a class="title is-size-6 has-text-white" href="#">Company</a></li>
+          </ul>
+        </div>
+        <div class="column is-4 is-flex-tablet is-justify-content-center">
+          <a class="title is-size-4 has-text-white" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="magic chef" width="auto">
+          </a>
+        </div>
+        <div class="column is-4">
+          <ul class="is-flex-tablet is-justify-content-end">
+            <li class="mb-6 mb-0-tablet"><a class="title is-size-6 has-text-white" href="#">Services</a></li>
+            <li class="ml-16-tablet"><a class="title is-size-6 has-text-white" href="#">Testimonials</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="columns is-align-items-center mb-0">
+        <div class="column is-4">
+          <p class="mb-0 title is-size-6 has-text-white" style="opacity: 0.5;">2021 © Shuffle</p>
+        </div>
+        <div class="column is-4">
+          <ul class="is-flex is-justify-content-center">
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <i class="fab fa-twitter"></i>
+                </span>
+              </a>
+            </li>
+            <li class="ml-2">
+              <a href="#">
+                <span class="icon">
+                  <i class="fab fa-twitter"></i>
+                </span>
+              </a>
+            </li>
+            <li class="ml-2">
+              <a href="#">
+                <span class="icon">
+                  <i class="fab fa-twitter"></i>
+                </span>
+              </a>
+            </li>
+            <li class="ml-2">
+              <a href="#">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+              </a>
+            </li>
+            <li class="ml-2">
+              <a href="#">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="column is-4 has-text-right"><a class="mb-0 title is-size-6 has-text-white" style="opacity: 0.5;">Privacy Policy</a></div>
+      </div>
+    </div>
+  </section>
+</div>

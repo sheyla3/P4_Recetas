@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recetas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+    <link href="{% static 'style.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <script src="{% static 'script.js' %}"></script>
+    <header> {% include "layouts/header.html" %} </header>
+    <div class="container is-max-widescreen">
+      <table class="table is-striped is-hoverable tablaHome">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Título</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for receta in recetas %}
+            <tr class="font-bold underline">
+              <td class="border px-4 py-2">{{ receta.titulo }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+  <footer class="footer"> {% include "layouts/footer.html" %} </footer>
+</html>

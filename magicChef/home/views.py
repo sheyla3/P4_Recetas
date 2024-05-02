@@ -4,8 +4,5 @@ from .models import *
 # Create your views here.
 
 def recetasHome(request):
-    obj=Receta.objects.all().values('titulo')
-    lista = "<h2>Receta </h2>"
-    for i in obj:
-        lista += f"{i}"
-    return HttpResponse(lista)
+    recetas = Receta.objects.all()
+    return render(request, 'index.html', {'recetas': recetas})

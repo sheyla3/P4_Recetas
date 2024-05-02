@@ -1,0 +1,41 @@
+{% load static %}
+<script src="{% static 'script.js' %}"></script>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="Girl in a jacket" width="auto" height="auto" /></a>
+    <div class="navbar-burger js-burger" data-target="navbarExampleTransparentExample">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <div id="navbarExampleTransparentExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="{% url 'home' %}">Home</a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">Docs</a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="https://bulma.io/documentation/overview/start/">Overview</a>
+          <a class="navbar-item" href="https://bulma.io/documentation/overview/modifiers/">Modifiers</a>
+          <hr class="navbar-divider" />
+          <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">Columns</a>
+          <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">Layout</a>
+          <a class="navbar-item" href="https://bulma.io/documentation/form/general/">Form</a>
+          <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">Elements</a>
+          <a class="navbar-item" href="https://bulma.io/documentation/components/breadcrumb/">Components</a>
+        </div>
+      </div>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary"><strong>Sign up</strong></a>
+          <a class="button is-light">Log in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
