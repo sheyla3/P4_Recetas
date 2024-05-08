@@ -1,4 +1,4 @@
-/*@import url("/node_modules/bulma/bulma.scss");*/
+@import url("/node_modules/bulma/bulma.scss");
 .navbar-item.is-mega {
   position: static;
 }
@@ -7,8 +7,8 @@
   padding: 0.375rem 1rem;
 }
 
-.colorSign {
-  background-color: #9BF1E6;
+.fondoImg {
+  background-image: url(/magicChef/static/img/slider1.png);
 }
 
 /*# sourceMappingURL=styles.css.map */

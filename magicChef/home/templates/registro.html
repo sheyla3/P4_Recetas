@@ -8,54 +8,60 @@
     <title>Recetas</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/script.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   </head>
-  <body>
-    <script src="{% static 'js/script.js' %}"></script>
-    <header>
-      {% include 'layouts/header.html' %}
-    </header>
-    <div class="container is-max-desktop">
-      <form method="post">
-        {% csrf_token %}
-        <div class="field">
-          <label class="label">Nombre</label>
-          <div class="control has-icons-left">
-            {{ form.nombre|add_class:'input' }}
-            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+  <header>
+    {% include 'layouts/header.html' %}
+  </header>
+  <body class="fondoImg" style="background-image: url({% static 'img/fondo1.png' %});">
+    <div class="container is-max-widescreen">
+      <div class="box my-6 is-half">
+        <p class="title is-2 has-text-centered">Registrate</p>
+        <form method="post">
+          {% csrf_token %}
+          <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control has-icons-left">
+              {{ form.nombre|add_class:'input' }}
+              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label class="label">Apellido</label>
-          <div class="control has-icons-left">
-            {{ form.apellido|add_class:'input' }}
-            <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+          <div class="field">
+            <label class="label">Apellido</label>
+            <div class="control has-icons-left">
+              {{ form.apellido|add_class:'input' }}
+              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label class="label">Correo</label>
-          <div class="control has-icons-left">
-            {{ form.correo|add_class:'input' }}
-            <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+          <div class="field">
+            <label class="label">Correo</label>
+            <div class="control has-icons-left">
+              {{ form.correo|add_class:'input' }}
+              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </div>
           </div>
-        </div>
 
-        <div class="field">
-          <label class="label">Contraseña</label>
-          <div class="control has-icons-left has-icons-right">
-            {{ form.contrasena|add_class:'input' }}
-            <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <div class="control has-icons-left has-icons-right">
+              {{ form.contrasena|add_class:'input' }}
+              <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+            </div>
           </div>
-        </div>
 
-        <div class="field is-grouped">
-          <div class="control">
-            <button type="submit" class="button is-link">Crear</button>
+          <div class="field is-grouped">
+            <div class="control" style="margin: 0 auto;">
+              <button type="submit" class="button is-link">Crear</button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </body>
+  <footer class="footer p-4">
+    {% include 'layouts/footer.html' %}
+  </footer>
 </html>

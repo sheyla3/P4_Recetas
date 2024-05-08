@@ -9,13 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bulma-carousel.min.css' %}">
     <link href="~bulma-carousel/dist/css/bulma-carousel.min.css" rel="stylesheet" />
+    <script src="{% static 'js/script.js' %}"></script>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
   </head>
+  <header>
+    {% include 'layouts/header.html' %}
+  </header>
   <body>
-    <script src="{% static 'js/script.js' %}"></script>
-    <header>
-      {% include 'layouts/header.html' %}
-    </header>
     <section class="hero is-medium has-carousel">
       <div id="carousel-demo" class="hero-carousel">
         <div class="item-1">
@@ -52,7 +52,7 @@
       </table>
     </div>
   </body>
-  <footer class="footer">
+  <footer class="footer p-4">
     {% include 'layouts/footer.html' %}
   </footer>
 </html>
