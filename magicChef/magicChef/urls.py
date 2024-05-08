@@ -21,5 +21,6 @@ from home.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', view=recetasHome, name="home"),
+    path('registro/', view=crearUsuario, name="registro"),
     
 ]

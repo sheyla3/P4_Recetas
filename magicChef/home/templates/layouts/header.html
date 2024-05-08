@@ -1,7 +1,28 @@
 {% load static %}
-<script src="{% static 'js/script.js' %}"></script>
-<link href="{% static 'css/style.css' %}" rel="stylesheet" />
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Get all "navbar-burger" elements
+    var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
+  
+    // Check if there are any nav burgers
+    if ($navbarBurgers.length > 0) {
+      // Add a click event on each of them
+      $navbarBurgers.forEach(function ($el) {
+        $el.addEventListener('click', function () {
+          // Get the target from the "data-target" attribute
+          var target = $el.dataset.target
+          var $target = document.getElementById(target)
+  
+          // Toggle the class on both the "navbar-burger" and the "navbar-menu"
+          $el.classList.toggle('is-active')
+          $target.classList.toggle('is-active')
+        })
+      })
+    }
+  })
+</script>
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+<nav class="navbar container is-fluid" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="Girl in a jacket" width="auto" height="auto" /></a>
     <div class="navbar-burger js-burger" data-target="navbarExampleTransparentExample">
@@ -16,24 +37,84 @@
     <div class="navbar-start">
       <a class="navbar-item" href="{% url 'home' %}">Home</a>
       <div class="navbar-item has-dropdown is-hoverable is-mega">
-        <a class="navbar-link">Docs</a>
-        <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/start/">Overview</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/modifiers/">Modifiers</a>
+        <div class="navbar-link">Recetas</div>
+        <div id="recetasDropdown" class="navbar-dropdown is-mega">
+          <div class="container is-fluid">
+            <div class="columns is-multiline">
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Fáciles</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Postres</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Pollo y Carne</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Recetas a la Parrilla</a>
+              </div>
+            </div>
+          </div>
           <hr class="navbar-divider" />
-          <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">Columns</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">Layout</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/form/general/">Form</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">Elements</a>
-          <a class="navbar-item" href="https://bulma.io/documentation/components/breadcrumb/">Components</a>
+          <div class="container is-fluid">
+            <div class="columns">
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Ensaladas</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Guarniciones</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Pescados y Mariscos</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Recetas de Pastas</a>
+              </div>
+            </div>
+          </div>
+          <hr class="navbar-divider" />
+          <div class="container is-fluid">
+            <div class="columns">
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Comida para Niños</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Postres para Niños</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Sopas</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Desayunos</a>
+              </div>
+            </div>
+          </div>
+          <hr class="navbar-divider" />
+          <div class="container is-fluid">
+            <div class="columns">
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Panes</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Salsas</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Bebidas</a>
+              </div>
+              <div class="column">
+                <a href="#" class="p-2 mx-5 dropdown-item">Platos Fuertes</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <input class="input is-normal mt-2 navbar-item" type="text" placeholder="Buscar por receta o ingrediente" />
     </div>
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary"><strong>Sign up</strong></a>
-          <a class="button is-light">Log in</a>
+          <a class="button is-white">Log in</a>
+          <a class="button" href="{% url 'registro' %}" style="background-color: #9BF1E6;"><strong>Sign up</strong></a>
         </div>
       </div>
     </div>

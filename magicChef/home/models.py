@@ -54,7 +54,7 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     correo = models.EmailField()
-    contraseña = models.CharField(max_length=500)
+    contrasena = models.CharField(max_length=500)
 
 class ListaCompra(models.Model):
     id_lista = models.AutoField(primary_key=True)
