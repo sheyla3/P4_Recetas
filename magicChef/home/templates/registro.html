@@ -10,46 +10,76 @@
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <script src="{% static 'js/script.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+      body {
+        background-image: url({% static 'img/fondo1.png' %});
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    </style>
   </head>
   <header>
     {% include 'layouts/header.html' %}
   </header>
-  <body class="fondoImg" style="background-image: url({% static 'img/fondo1.png' %});">
-    <div class="container is-max-widescreen">
-      <div class="box my-6 is-half">
+  <body>
+    <div class="container is-max-widescreen" style="height: 100%;margin: 0 auto;">
+      <div class="box my-6" style="width: 40%;margin: 0 auto;">
         <p class="title is-2 has-text-centered">Registrate</p>
-        <form method="post">
+        {% if messages %}
+          <div class="notification is-warning is-light" >
+            <button class="delete"></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="POST">
           {% csrf_token %}
           <div class="field">
             <label class="label">Nombre</label>
             <div class="control has-icons-left">
-              {{ form.nombre|add_class:'input' }}
+              <input type="text" class="input" id="{{ form.nombre.name }}" name="{{ form.nombre.name }}" placeholder="{{ form.nombre.name }}" />
               <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
             </div>
+            {% if form.nombre.errors %}
+              <p class="help is-danger">{{ form.nombre.errors|first }}</p>
+            {% endif %}
           </div>
 
           <div class="field">
             <label class="label">Apellido</label>
             <div class="control has-icons-left">
-              {{ form.apellido|add_class:'input' }}
+              <input type="text" class="input" id="{{ form.apellido.name }}" name="{{ form.apellido.name }}" placeholder="{{ form.apellido.name }}" />
               <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
             </div>
+            {% if form.apellido.errors %}
+              <p class="help is-danger">{{ form.apellido.errors|first }}</p>
+            {% endif %}
           </div>
 
           <div class="field">
             <label class="label">Correo</label>
             <div class="control has-icons-left">
-              {{ form.correo|add_class:'input' }}
+              <input type="email" class="input" id="{{ form.correo.name }}" name="{{ form.correo.name }}" placeholder="{{ form.correo.name }}" />
               <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
             </div>
+            {% if form.correo.errors %}
+              <p class="help is-danger">{{ form.correo.errors|first }}</p>
+            {% endif %}
           </div>
 
           <div class="field">
             <label class="label">Contraseña</label>
-            <div class="control has-icons-left has-icons-right">
-              {{ form.contrasena|add_class:'input' }}
+            <div class="control has-icons-left">
+              <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
               <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
             </div>
+            <div class="control is-right">
+              <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
+            </div>
+            {% if form.contrasena.errors %}
+              <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
+            {% endif %}
           </div>
 
           <div class="field is-grouped">
@@ -59,6 +89,21 @@
           </div>
         </form>
       </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const togglePassword = document.querySelector('.toggle-password')
+          const passwordField = document.querySelector('#{{ form.contrasena.id_for_label }}')
+        
+          togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password'
+            passwordField.setAttribute('type', type)
+        
+            // Cambiar el icono del ojo
+            const eyeIcon = this.querySelector('i')
+            eyeIcon.classList.toggle('fa-eye-slash')
+          })
+        })
+      </script>
     </div>
   </body>
   <footer class="footer p-4">

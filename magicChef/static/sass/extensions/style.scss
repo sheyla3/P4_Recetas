@@ -1,3 +1,30 @@
 .fondoImg {
     background-image: url(/magicChef/static/img/slider1.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
+
+/*
+#form = RegistroUsuarioForm(request.POST)
+        correo = request.POST.get('correo')
+        if form.is_valid():
+            try:
+                # Guardar el formulario para crear el usuario
+                usuario = form.save(commit=False)
+                # Guardar el usuario
+                usuario.save()
+                # Iniciar sesión con el usuario recién creado
+                login(request, usuario)
+                # Redirigir a alguna página de éxito
+                return redirect('home')
+            except IntegrityError:
+                # Capturar si hay un error de integridad, como correo duplicado
+                messages.error(request, "El correo ya existe.")
+                # Redirigir a la página anterior
+                return redirect(request.META.get('HTTP_REFERER', '/'))
+        else:
+            # Si el formulario no es válido, mostrar errores
+            messages.error(request, "Por favor, corrija los errores en el formulario.")
+            return render(request, 'registro.html', {'form': form})
+*/

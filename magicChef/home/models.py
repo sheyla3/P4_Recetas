@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 
-email_regex = RegexValidator(regex=r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+', message="Please enter valid Email address.")
+email_regex = RegexValidator(regex=r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+', message="Email invalido tiene que tener @ y . ")
 string_regex =  RegexValidator(regex=r'^[a-zA-Z]+(?:\s[a-zA-Z]+)*$', message="Caracteres especiales como (~!#^`'$|{}<>*) no se permiten.")
 
 class Receta(models.Model):

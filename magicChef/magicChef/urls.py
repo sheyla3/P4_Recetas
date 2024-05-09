@@ -24,8 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', view=recetasHome, name="home"),
     path('registro/', view=crearUsuario, name="registro"),
-    
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('login/', view=recetasHome, name="login"),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
