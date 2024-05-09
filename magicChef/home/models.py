@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.contrib.auth.hashers import check_password as django_check_password
 
 email_regex = RegexValidator(regex=r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+', message="Email invalido tiene que tener @ y . ")
 string_regex =  RegexValidator(regex=r'^[a-zA-Z]+(?:\s[a-zA-Z]+)*$', message="Caracteres especiales como (~!#^`'$|{}<>*) no se permiten.")
@@ -56,6 +57,8 @@ class Usuario(models.Model):
     apellido = models.CharField(max_length=50, validators=[string_regex])
     correo = models.EmailField(unique=True, validators=[email_regex])
     contrasena = models.CharField(max_length=500)
+    def check_password(self, raw_password):
+        return django_check_password(raw_password, self.contrasena)
 
 class ListaCompra(models.Model):
     id_lista = models.AutoField(primary_key=True)

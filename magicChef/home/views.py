@@ -4,7 +4,7 @@ from .models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -40,3 +40,24 @@ def crearUsuario(request):
         messages.success(request, 'Creado correctamente. Ya puedes iniciar sesion.')
         return redirect('/registro/')
         
+def inicioUsuario(request):
+    if request.method == 'GET':
+        form = RegistroUsuarioForm()
+        return render(request, 'login.html', {'form': form})
+    elif request.method == 'POST':
+        correo = request.POST.get('correo')
+        contrasena = request.POST.get('contrasena')
+        
+        user = authenticate(correo=correo, contrasena=contrasena)
+        
+        if user is None:
+            messages.error(request, 'Credenciales inválidas')
+            return redirect('/login/')
+        else:
+            login(request, user)
+            return redirect('/')
+    return render(request, 'login.html')
+
+def cerrarSesion(request):
+    logout(request)
+    return redirect('')

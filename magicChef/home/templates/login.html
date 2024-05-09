@@ -24,9 +24,7 @@
   <body>
     <div class="container is-max-widescreen pb-1" style="height: 100%;margin: 0 auto;">
       <div class="box my-6" style="width: 40%;margin: 0 auto;">
-        <div style="text-align: center;">
-          <img src="{% static 'img/signup.gif' %}" alt="Registrate" style="margin: auto;"> 
-        </div>
+        <p class="title is-2 has-text-centered">Inicia</p>
         {% if messages %}
           <div class="notification is-warning is-light" >
             <button class="delete"></button>
@@ -38,37 +36,13 @@
         <form method="POST">
           {% csrf_token %}
           <div class="field">
-            <label class="label">Nombre</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.nombre.name }}" name="{{ form.nombre.name }}" placeholder="{{ form.nombre.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-            </div>
-            {% if form.nombre.errors %}
-              <p class="help is-danger">{{ form.nombre.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            <label class="label">Apellido</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.apellido.name }}" name="{{ form.apellido.name }}" placeholder="{{ form.apellido.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-            </div>
-            {% if form.apellido.errors %}
-              <p class="help is-danger">{{ form.apellido.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
             <label class="label">Correo</label>
             <div class="control has-icons-left">
               <input type="email" class="input" id="{{ form.correo.name }}" name="{{ form.correo.name }}" placeholder="{{ form.correo.name }}" />
               <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
             </div>
-            {% if form.correo.errors %}
-              <p class="help is-danger">{{ form.correo.errors|first }}</p>
-            {% endif %}
           </div>
+
           <div class="columns">
             <div class="column is-four-fifths">
               <div class="field">
@@ -77,10 +51,6 @@
                   <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
                   <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
                 </div>
-                
-                {% if form.contrasena.errors %}
-                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
-                {% endif %}
               </div>
             </div>
             <div class="column" style="display: flex;align-items: end;">
@@ -89,10 +59,10 @@
               </div>
             </div>
           </div>
-          
+
           <div class="field is-grouped">
             <div class="control" style="margin: 0 auto;">
-              <button type="submit" class="button is-link">Crear</button>
+              <button type="submit" class="button is-link">Iniciar</button>
             </div>
           </div>
         </form>
@@ -111,6 +81,7 @@
             eyeIcon.classList.toggle('fa-eye-slash')
           })
         })
+        
         document.addEventListener('DOMContentLoaded', () => {
           (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
             const $notification = $delete.parentNode;
@@ -123,4 +94,7 @@
       </script>
     </div>
   </body>
+  <footer class="footer p-4">
+    {% include 'layouts/footer.html' %}
+  </footer>
 </html>
