@@ -1,23 +1,21 @@
 {% extends 'baseUser.html' %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}Inicio{% endblock %}
 
 {% block content %}
 {% load static %}
 {% load widget_tweaks %}
 
-    <style>
-      body {
-        background-image: url({% static 'img/fondo1.png' %});
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-    </style>
+<style>
+  body {
+    background-image: url({% static 'img/fondo1.png' %});
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>
     <div class="container is-max-widescreen pb-1" style="height: 100%;margin: 0 auto;">
       <div class="box my-6" style="width: 40%;margin: 0 auto;">
-        <div style="text-align: center;">
-          <img src="{% static 'img/signup.gif' %}" alt="Registrate" style="margin: auto;"> 
-        </div>
+        <p class="title is-2 has-text-centered">Inicia</p>
         {% if messages %}
           <div class="notification is-warning is-light" >
             <button class="delete"></button>
@@ -29,60 +27,21 @@
         <form method="POST">
           {% csrf_token %}
           <div class="field">
-            <label class="label">Apodo</label>
+            <label class="label">Usuario</label>
             <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.apodo.name }}" name="{{ form.apodo.name }}" placeholder="{{ form.apodo.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-            </div>
-            {% if form.apodo.errors %}
-              <p class="help is-danger">{{ form.apodo.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            <label class="label">Nombre</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.nombre.name }}" name="{{ form.nombre.name }}" placeholder="{{ form.nombre.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-            </div>
-            {% if form.nombre.errors %}
-              <p class="help is-danger">{{ form.nombre.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            <label class="label">Apellido</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.apellido.name }}" name="{{ form.apellido.name }}" placeholder="{{ form.apellido.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-            </div>
-            {% if form.apellido.errors %}
-              <p class="help is-danger">{{ form.apellido.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            <label class="label">Correo</label>
-            <div class="control has-icons-left">
-              <input type="email" class="input" id="{{ form.correo.name }}" name="{{ form.correo.name }}" placeholder="{{ form.correo.name }}" />
+              <input type="email" class="input" id="{{ form.usuario.name }}" name="{{ form.usuario.name }}" placeholder="{{ form.usuario.name }}" />
               <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
             </div>
-            {% if form.correo.errors %}
-              <p class="help is-danger">{{ form.correo.errors|first }}</p>
-            {% endif %}
           </div>
+
           <div class="columns">
             <div class="column is-four-fifths">
               <div class="field">
                 <label class="label">Contraseña</label>
                 <div class="control has-icons-left">
-                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
+                  <input type="password" class="input" id="{{ form.password.name }}" name="{{ form.password.name }}" />
                   <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
                 </div>
-                
-                {% if form.contrasena.errors %}
-                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
-                {% endif %}
               </div>
             </div>
             <div class="column" style="display: flex;align-items: end;">
@@ -91,10 +50,10 @@
               </div>
             </div>
           </div>
-          
+
           <div class="field is-grouped">
             <div class="control" style="margin: 0 auto;">
-              <button type="submit" class="button is-link">Crear</button>
+              <button type="submit" class="button is-link">Iniciar</button>
             </div>
           </div>
         </form>
@@ -113,6 +72,7 @@
             eyeIcon.classList.toggle('fa-eye-slash')
           })
         })
+        
         document.addEventListener('DOMContentLoaded', () => {
           (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
             const $notification = $delete.parentNode;

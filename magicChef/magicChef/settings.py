@@ -136,7 +136,5 @@ MEDIA_ROOT = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTHENTICATION_BACKENDS = [
-    'home.backends.EmailBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+# Modelo de usuario para backend
+AUTH_USER_MODEL = 'home.Usuario'

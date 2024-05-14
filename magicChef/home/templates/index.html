@@ -1,58 +1,47 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recetas</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bulma-carousel.min.css' %}">
-    <link href="~bulma-carousel/dist/css/bulma-carousel.min.css" rel="stylesheet" />
-    <script src="{% static 'js/script.js' %}"></script>
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-  </head>
-  <header>
-    {% include 'layouts/header.html' %}
-  </header>
-  <body>
-    <section class="hero is-medium has-carousel">
-      <div id="carousel-demo" class="hero-carousel">
-        <div class="item-1">
-           <img src="{% static 'img/slider1.png' %}" alt="slider foto comida"> 
-        </div>
-        <div class="item-2">
-           <img src="{% static 'img/slider1.png' %}" alt="slider foto comida"> 
-        </div>
-        <div class="item-3">
-           <img src="{% static 'img/slider1.png' %}" alt="slider foto comida"> 
-        </div>
+{% extends 'baseUser.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  {% load static %}
+
+  <section class="hero is-medium has-carousel">
+    <div id="carousel-demo" class="hero-carousel">
+      <div class="item-1">
+        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
       </div>
-    </section>
-    <script>
-      bulmaCarousel.attach('#carousel-demo', {
-        slidesToScroll: 1,
-        slidesToShow: 4
-      })
-    </script>
-    <div class="container is-max-widescreen">
-      <table class="table is-striped is-hoverable tablaHome">
-        <thead>
-          <tr>
-            <th class="px-4 py-2">Título</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for receta in recetas %}
-            <tr class="font-bold underline">
-              <td class="border px-4 py-2">{{ receta.titulo }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="item-2">
+        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
+      </div>
+      <div class="item-3">
+        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
+      </div>
     </div>
-  </body>
-  <footer class="footer p-4">
-    {% include 'layouts/footer.html' %}
-  </footer>
-</html>
+  </section>
+  <script>
+    bulmaCarousel.attach('#carousel-demo', {
+      slidesToScroll: 1,
+      slidesToShow: 4
+    })
+  </script>
+  <div class="container is-max-widescreen">
+    <table class="table is-striped is-hoverable tablaHome">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">Título</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for receta in recetas %}
+          <tr class="font-bold underline">
+            <td class="border px-4 py-2">{{ receta.titulo }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div>
+      <p>Welcome, {{ user.nombre }}</p>
+      <p>Email: {{ user.correo }}</p>
+    </div>
+  </div>
+{% endblock %}
