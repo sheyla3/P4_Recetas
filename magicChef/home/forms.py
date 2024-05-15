@@ -4,11 +4,23 @@ from django.contrib.auth import authenticate
 from .models import *
 
 class RegistroUsuarioForm(forms.ModelForm):
-    contraseña = forms.CharField(widget=forms.PasswordInput)
+    contrasena = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = Usuario
         fields = ['apodo', 'nombre', 'apellido', 'correo', 'contrasena']
+        
+class EditarUsuarioForm(forms.ModelForm):
+    contrasena = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = Usuario
+        fields = ['apodo', 'nombre', 'apellido', 'correo']
+        
+class CambiarContrasenaForm(forms.Form):
+    contrasena_actual = forms.CharField(label='Contraseña actual', widget=forms.PasswordInput)
+    nueva_contrasena = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput)
+    confirmar_nueva_contrasena = forms.CharField(label='Confirmar nueva contraseña', widget=forms.PasswordInput)
 
 class UserLoginForm(forms.Form):
     correo = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input'}))
@@ -28,7 +40,7 @@ class AdminLoginForm(forms.Form):
 
     def clean(self):
         usuario = self.cleaned_data.get('usuario')
-        password = self.cleaned_data.get('password')
+        password = self.cleaned_data.get('contrasena')
         try:
             admin_user = Admin.objects.get(usuario__correo=usuario)
             if not admin_user.check_password(password):

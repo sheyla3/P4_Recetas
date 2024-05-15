@@ -24,7 +24,7 @@
 <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 <nav class="navbar container is-fluid" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="Girl in a jacket" width="auto" height="auto" /></a>
+    <a class="navbar-item" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="logo magic chef" width="auto" height="auto" /></a>
     <div class="navbar-burger js-burger" data-target="navbarExampleTransparentExample">
       <span></span>
       <span></span>
@@ -110,11 +110,15 @@
       <input class="input is-normal mt-2 navbar-item" type="text" placeholder="Buscar por receta o ingrediente" />
     </div>
     <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <a class="button is-white" href="{% url 'cerrar' %}">Cerrar sesion</a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <p class="navbar-link"> <img src="{% static 'img/menuA.svg' %}" alt="menu" width="auto" height="auto" /> </p>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="{% url 'perfil' %}"> Perfil </a>
+          <a class="navbar-item" href="{% url 'receta' %}"> Crear receta </a>
+          <a class="navbar-item" href="{% url 'lista' %}"> Lista de compra </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item is-selected" href="{% url 'cerrar' %}"> Cerrar sesion </a>
         </div>
-      </div>
     </div>
   </div>
 </nav>

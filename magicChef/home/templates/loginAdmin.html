@@ -1,6 +1,6 @@
-{% extends 'baseUser.html' %}
+{% extends 'core/baseAdmin.html' %}
 
-{% block title %}Inicio{% endblock %}
+{% block title %}Admin Inicio{% endblock %}
 
 {% block content %}
 {% load static %}
@@ -15,7 +15,7 @@
 </style>
     <div class="container is-max-widescreen pb-1" style="height: 100%;margin: 0 auto;">
       <div class="box my-6" style="width: 40%;margin: 0 auto;">
-        <p class="title is-2 has-text-centered">Inicia</p>
+        <p class="title is-2 has-text-centered">Bienvenido Admin</p>
         {% if messages %}
           <div class="notification is-warning is-light" >
             <button class="delete"></button>
@@ -29,8 +29,8 @@
           <div class="field">
             <label class="label">Usuario</label>
             <div class="control has-icons-left">
-              <input type="email" class="input" id="{{ form.usuario.name }}" name="{{ form.usuario.name }}" placeholder="{{ form.usuario.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+              <input type="text" class="input" id="{{ form.usuario.name }}" name="{{ form.usuario.name }}" placeholder="{{ form.usuario.name }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
             </div>
           </div>
 
@@ -39,7 +39,7 @@
               <div class="field">
                 <label class="label">Contraseña</label>
                 <div class="control has-icons-left">
-                  <input type="password" class="input" id="{{ form.password.name }}" name="{{ form.password.name }}" />
+                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
                   <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
                 </div>
               </div>

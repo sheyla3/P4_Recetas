@@ -38,11 +38,15 @@ class Foto(models.Model):
     id_foto = models.AutoField(primary_key=True)
     id_receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     foto = models.ImageField()
-
+    
 class Ingrediente(models.Model):
     id_ingrediente = models.AutoField(primary_key=True)
-    id_receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
     nombre_ingrediente = models.CharField(max_length=50, validators=[string_regex])
+
+class IngredienteReceta(models.Model):
+    id_ingrediente_receta = models.AutoField(primary_key=True)
+    id_receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
+    id_ingrediente = models.ForeignKey(Ingrediente, on_delete=models.CASCADE)
     cantidad = models.CharField(max_length=50)
 
 class Comentario(models.Model):
@@ -60,12 +64,6 @@ class UsuarioManager(BaseUserManager):
         user.set_password(contrasena)
         user.save(using=self._db)
         return user
-
-    def create_superuser(self, correo, nombre, apellido, contrasena=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        return self.create_user(correo, nombre, apellido, contrasena, **extra_fields)
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
     id_usuario = models.AutoField(primary_key=True)
@@ -97,15 +95,6 @@ class ListaCompra(models.Model):
 
 class Admin(models.Model):
     id_admin = models.AutoField(primary_key=True)
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    usuario = models.CharField(max_length=500, unique=True)
     contrasena = models.CharField(max_length=500)
-
-    def set_password(self, raw_password):
-        self.contrasena = make_password(raw_password)
-        self.save()
-
-    def check_password(self, raw_password):
-        return django_check_password(raw_password, self.contrasena)
-
-    def __str__(self):
-        return self.usuario.correo
+    last_login = models.DateTimeField(auto_now=True)

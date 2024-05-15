@@ -1,0 +1,169 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Editar perfil
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  {% load widget_tweaks %}
+
+  <style>
+    body {
+      background-color: #9bf1e6;
+    }
+  </style>
+  <div class="container is-max-widescreen pb-1 py-6">
+    <div class="card" style="width: 40%;margin: 0 auto;">
+      <div style="text-align: center;">
+        <h1 class="title is-1 p-3">Editando</h1>
+      </div>
+      {% if messages %}
+        <div class="notification is-warning is-light">
+          <button class="delete"></button>
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="card-content">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="field">
+            <label class="label">Apodo</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" id="{{ form.apodo.name }}" name="{{ form.apodo.name }}" value="{{ user.apodo }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+            </div>
+            {% if form.apodo.errors %}
+              <p class="help is-danger">{{ form.apodo.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" id="{{ form.nombre.name }}" name="{{ form.nombre.name }}" value="{{ user.nombre }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+            </div>
+            {% if form.nombre.errors %}
+              <p class="help is-danger">{{ form.nombre.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="field">
+            <label class="label">Apellido</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" id="{{ form.apellido.name }}" name="{{ form.apellido.name }}" value="{{ user.apellido }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+            </div>
+            {% if form.apellido.errors %}
+              <p class="help is-danger">{{ form.apellido.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="field">
+            <label class="label">Correo</label>
+            <div class="control has-icons-left">
+              <input type="email" class="input" id="{{ form.correo.name }}" name="{{ form.correo.name }}" value="{{ user.correo }}" />
+              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </div>
+            {% if form.correo.errors %}
+              <p class="help is-danger">{{ form.correo.errors|first }}</p>
+            {% endif %}
+          </div>
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Contraseña antigua</label>
+                <div class="control has-icons-left">
+                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
+                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                </div>
+                {% if form.contrasena.errors %}
+                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="column" style="display: flex;align-items: end;">
+              <div class="control is-right">
+                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Contraseña nueva</label>
+                <div class="control has-icons-left">
+                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
+                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                </div>
+                {% if form.contrasena.errors %}
+                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="column" style="display: flex;align-items: end;">
+              <div class="control is-right">
+                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
+              </div>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Confirmar contraseña</label>
+                <div class="control has-icons-left">
+                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
+                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                </div>
+                {% if form.contrasena.errors %}
+                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="column" style="display: flex;align-items: end;">
+              <div class="control is-right">
+                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
+              </div>
+            </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control" style="margin: 0 auto;">
+              <button type="submit" class="button is-link">Guardar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <footer class="card-footer">
+        <a href="{% url 'perfil' %}" class="card-footer-item">Cancelar</a>
+      </footer>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.querySelector('.toggle-password')
+        const passwordField = document.querySelector('#{{ form.contrasena.name }}')
+      
+        togglePassword.addEventListener('click', function () {
+          const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password'
+          passwordField.setAttribute('type', type)
+      
+          // Cambiar el icono del ojo
+          const eyeIcon = this.querySelector('i')
+          eyeIcon.classList.toggle('fa-eye-slash')
+        })
+      })
+      //pbkdf2_sha256$720000$y3QuJn1iQuN2nwnWBkqOwa$yAZMxuDX42ywQgb4l8cTcT7Isg5D3JMj0Ehuyaaca4w=
+      document.addEventListener('DOMContentLoaded', () => {
+        ;(document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+          const $notification = $delete.parentNode
+      
+          $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification)
+          })
+        })
+      })
+    </script>
+  </div>
+{% endblock %}

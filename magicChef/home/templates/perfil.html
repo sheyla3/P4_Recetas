@@ -1,0 +1,73 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Perfil
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  {% load widget_tweaks %}
+
+  <style>
+    body {
+      background-color: #9bf1e6;
+    }
+  </style>
+  <div class="container is-max-widescreen pb-1 py-6">
+    <div class="card py-5" style="width: 40%;margin: 0 auto;">
+      <header class="card-header p-3">
+        <h1 class="title is-1">Hola {{ user.nombre }}</h1>
+      </header>
+      <div class="card-content">
+        <div class="columns is-mobile">
+          <div class="column is-1"><span class="icon is-small is-left"><i class="fas fa-user"></i></span></div>
+          <div class="column is-3">Apodo:</div>
+          <div class="column">{{ user.apodo }}</div>
+        </div>
+        <div class="columns is-mobile">
+          <div class="column is-1"><span class="icon is-small is-left"><i class="fas fa-user"></i></span></div>
+          <div class="column is-3">Nombre:</div>
+          <div class="column">{{ user.nombre }}</div>
+        </div>
+        <div class="columns is-mobile">
+          <div class="column is-1"><span class="icon is-small is-left"><i class="fas fa-user"></i></span></div>
+          <div class="column is-3">Apellido:</div>
+          <div class="column">{{ user.apellido }}</div>
+        </div>
+        <div class="columns is-mobile">
+          <div class="column is-1"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div>
+          <div class="column is-3">Correo:</div>
+          <div class="column">{{ user.correo }}</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="{% url 'perfilEditar' %}" class="card-footer-item">Editar</a>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.querySelector('.toggle-password')
+        const passwordField = document.querySelector('#{{ form.contrasena.name }}')
+      
+        togglePassword.addEventListener('click', function () {
+          const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password'
+          passwordField.setAttribute('type', type)
+      
+          // Cambiar el icono del ojo
+          const eyeIcon = this.querySelector('i')
+          eyeIcon.classList.toggle('fa-eye-slash')
+        })
+      })
+      
+      document.addEventListener('DOMContentLoaded', () => {
+        ;(document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+          const $notification = $delete.parentNode
+      
+          $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification)
+          })
+        })
+      })
+    </script>
+  </div>
+{% endblock %}
