@@ -118,6 +118,23 @@ def receta(request):
     return render(request, 'recetas.html', {'form': form, 'user': user, 'fechaActual': fechaActual})
 
 @login_required
+def comprobacionIng(request):
+    user = request.user
+    ingredientes = Ingrediente.objects.all()
+    fechaActual = datetime.date.today()
+    if request.method == 'POST':
+        form = CrearRecetaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            messages.success(request, 'Error al crear receta')
+            return redirect('comprobacionIng')
+    else:
+        form = CrearRecetaForm()
+    return render(request, 'comprobacionIng.html', {'form': form, 'user': user, 'fechaActual': fechaActual, 'ingredientes': ingredientes})
+
+@login_required
 def lista(request):
     user = request.user
     ingredientes = Ingrediente.objects.all()

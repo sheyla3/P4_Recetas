@@ -1,14 +1,14 @@
 {% extends 'core/baseUser.html' %}
 
 {% block title %}
-  Crear Receta
+  Comprobacion de Ingredientes
 {% endblock %}
 
 {% block content %}
   {% load static %}
   <style>
     body {
-      background-color: #F18290;
+      background-color: #f8a662;
     }
   </style>
   <div class="container mb-5">
@@ -55,79 +55,53 @@
             {% endfor %}
           </div>
         {% endif %}
-        <form method="POST">
-          {% csrf_token %}
-          <div class="field">
-            <label class="label">Apodo</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.apodo.name }}" name="{{ form.apodo.name }}" placeholder="{{ form.apodo.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user is-dark"></i></span>
-            </div>
-            {% if form.apodo.errors %}
-              <p class="help is-danger is-dark">{{ form.apodo.errors|first }}</p>
-            {% endif %}
-          </div>
+        <input class="input" list="ingredients" id="ingredient-search" placeholder="Buscar ingredientes" />
+        <datalist id="ingredients">
+          {% for ingrediente in ingredientes %}
+            <option value="{{ ingrediente.nombre_ingrediente }}">{{ ingrediente.nombre_ingrediente }}</option>
+          {% endfor %}
+        </datalist>
 
-          <div class="field">
-            <label class="label">Nombre</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.nombre.name }}" name="{{ form.nombre.name }}" placeholder="{{ form.nombre.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user is-dark"></i></span>
+        <div class="mt-5" style="margin: auto;">
+          <p class="title is-2" style="text-align:center;">Están todos tus ingredientes?</p>
+          <div class="columns is-mobile">
+            <div class="column">
+              <a class="button is-success is-medium is-responsive has-text-white" style="float: right;">Sí</a>
             </div>
-            {% if form.nombre.errors %}
-              <p class="help is-danger is-dark">{{ form.nombre.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            <label class="label">Apellido</label>
-            <div class="control has-icons-left">
-              <input type="text" class="input" id="{{ form.apellido.name }}" name="{{ form.apellido.name }}" placeholder="{{ form.apellido.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-user is-dark"></i></span>
-            </div>
-            {% if form.apellido.errors %}
-              <p class="help is-danger is-dark">{{ form.apellido.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            <label class="label">Correo</label>
-            <div class="control has-icons-left">
-              <input type="email" class="input" id="{{ form.correo.name }}" name="{{ form.correo.name }}" placeholder="{{ form.correo.name }}" />
-              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
-            </div>
-            {% if form.correo.errors %}
-              <p class="help is-danger is-dark">{{ form.correo.errors|first }}</p>
-            {% endif %}
-          </div>
-          <div class="columns">
-            <div class="column is-four-fifths">
-              <div class="field">
-                <label class="label">Contraseña</label>
-                <div class="control has-icons-left">
-                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
-                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
-                </div>
-
-                {% if form.contrasena.errors %}
-                  <p class="help is-danger is-dark">{{ form.contrasena.errors|first }}</p>
-                {% endif %}
-              </div>
-            </div>
-            <div class="column" style="display: flex;align-items: end;">
-              <div class="control is-right">
-                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
-              </div>
+            <div class="column">
+              <button class="button is-danger is-medium is-responsive has-text-white" id="no-btn">No</button>
             </div>
           </div>
-
-          <div class="field is-grouped">
-            <div class="control" style="margin: 0 auto;">
-              <button type="submit" class="button is-link">Crear</button>
-            </div>
-          </div>
-        </form>
+          <form id="add-ingredients-form" style="display: none;">
+            <label for="missing-ingredients">Ingredientes faltantes:</label>
+            <input type="text" id="missing-ingredients" name="missing-ingredients" />
+            <button type="submit">Agregar</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+  <script>
+    const ingredientSearchInput = document.getElementById('ingredient-search')
+    const ingredientsDatalist = document.getElementById('ingredients')
+    const noBtn = document.getElementById('no-btn')
+    const addIngredientsForm = document.getElementById('add-ingredients-form')
+    
+    ingredientSearchInput.addEventListener('input', () => {
+      const searchQuery = ingredientSearchInput.value.trim().toLowerCase()
+      const options = ingredientsDatalist.options
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i]
+        if (option.value.toLowerCase().includes(searchQuery)) {
+          option.style.display = 'block'
+        } else {
+          option.style.display = 'none'
+        }
+      }
+    })
+    
+    noBtn.addEventListener('click', () => {
+      addIngredientsForm.style.display = 'block'
+    })
+  </script>
 {% endblock %}
