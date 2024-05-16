@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.urls import path
 from home.views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', view=recetasHome, name="home"),
@@ -27,9 +28,15 @@ urlpatterns = [
     path('receta/', view=receta, name="receta"),
     path('perfilEditar/', view=perfilEditar, name="perfilEditar"),
     path('lista/', view=lista, name="lista"),
+    path('comprobacionIng/', view=receta, name="comprobacionIng"),
     
+    path('reset_password',auth_views.PasswordResetView.as_view(template_name='passwords/password_reset_form.html'),name="reset_password"),
+    path('reset_password_sent',auth_views.PasswordResetDoneView.as_view(template_name='passwords/password_reset_done.html'),name="password_reset_done"),
+    path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='passwords/password_reset_confirm.html'),name="password_reset_confirm"),
+    path('reset_password_complete',auth_views.PasswordResetCompleteView.as_view(template_name='passwords/password_reset_complete.html'),name="password_reset_complete"),
     
     path('AdminHome/', view=AdminHome, name="AdminHome"),
     path('loginAdmin/', view=inicioAdmin, name="loginAdmin"),
     
 ]
+

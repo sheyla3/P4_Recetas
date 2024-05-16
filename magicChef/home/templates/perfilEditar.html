@@ -72,62 +72,12 @@
               <p class="help is-danger">{{ form.correo.errors|first }}</p>
             {% endif %}
           </div>
-          <div class="columns">
-            <div class="column is-four-fifths">
-              <div class="field">
-                <label class="label">Contraseña antigua</label>
-                <div class="control has-icons-left">
-                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
-                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
-                </div>
-                {% if form.contrasena.errors %}
-                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
-                {% endif %}
-              </div>
-            </div>
-            <div class="column" style="display: flex;align-items: end;">
-              <div class="control is-right">
-                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
-              </div>
-            </div>
+          <div class="notification is-danger is-light">
+            <button class="delete"></button>
+            Para más seguridad le enviaremos un email para poder cambiar la contraseña.
           </div>
-          <div class="columns">
-            <div class="column is-four-fifths">
-              <div class="field">
-                <label class="label">Contraseña nueva</label>
-                <div class="control has-icons-left">
-                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
-                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
-                </div>
-                {% if form.contrasena.errors %}
-                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
-                {% endif %}
-              </div>
-            </div>
-            <div class="column" style="display: flex;align-items: end;">
-              <div class="control is-right">
-                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column is-four-fifths">
-              <div class="field">
-                <label class="label">Confirmar contraseña</label>
-                <div class="control has-icons-left">
-                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
-                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
-                </div>
-                {% if form.contrasena.errors %}
-                  <p class="help is-danger">{{ form.contrasena.errors|first }}</p>
-                {% endif %}
-              </div>
-            </div>
-            <div class="column" style="display: flex;align-items: end;">
-              <div class="control is-right">
-                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
-              </div>
-            </div>
+          <div class="field" style="text-align:center;">
+            <a href="{% url 'reset_password' %}" class="button is-danger has-text-white">Cambiar la contraseña</a>
           </div>
           <div class="field is-grouped">
             <div class="control" style="margin: 0 auto;">

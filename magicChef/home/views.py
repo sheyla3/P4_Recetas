@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
+import datetime
 from django.db import IntegrityError
 from django.utils import timezone
 from .forms import *
@@ -93,10 +94,9 @@ def perfilEditar(request):
     if request.method == 'POST':
         form = EditarUsuarioForm(request.POST, instance=user)
         if form.is_valid():
-            form.cleaned_data['contrasena'] = set_password(form.cleaned_data['contrasena'])
             form.save()
             messages.success(request, 'Perfil actualizado con éxito.')
-            return redirect('perfilEditar')
+            return redirect('perfil')
     else:
         form = EditarUsuarioForm(instance=user)
     return render(request, 'perfilEditar.html', {'form': form, 'user': user})
@@ -104,8 +104,18 @@ def perfilEditar(request):
 @login_required
 def receta(request):
     user = request.user
-    ingredientes = Ingrediente.objects.all()
-    return render(request, 'perfil.html', {'user': user, 'ingredientes': ingredientes})
+    fechaActual = datetime.date.today()
+    if request.method == 'POST':
+        form = CrearRecetaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('comprobacionIng')
+        else:
+            messages.success(request, 'Error al crear receta')
+            return redirect('receta')
+    else:
+        form = CrearRecetaForm()
+    return render(request, 'recetas.html', {'form': form, 'user': user, 'fechaActual': fechaActual})
 
 @login_required
 def lista(request):

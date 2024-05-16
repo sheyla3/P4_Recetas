@@ -1,0 +1,133 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Crear Receta
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <style>
+    body {
+      background-color: #F18290;
+    }
+  </style>
+  <div class="container mb-5">
+    <div class="box mt-5 mx-5">
+      <div class="mb-3">
+        <ul class="steps has-content-centered">
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 1</p>
+              <p>Datos de la receta</p>
+            </div>
+          </li>
+          <li class="steps-segment is-active">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 2</p>
+              <p>Comprobacion de ingredientes</p>
+            </div>
+          </li>
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 3</p>
+              <p>Añadir ingredientes a la receta</p>
+            </div>
+          </li>
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 4</p>
+              <p>Añadir fotos</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-6">
+        {% if messages %}
+          <div class="notification is-warning is-light">
+            <button class="delete"></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="POST">
+          {% csrf_token %}
+          <div class="field">
+            <label class="label">Apodo</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" id="{{ form.apodo.name }}" name="{{ form.apodo.name }}" placeholder="{{ form.apodo.name }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user is-dark"></i></span>
+            </div>
+            {% if form.apodo.errors %}
+              <p class="help is-danger is-dark">{{ form.apodo.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="field">
+            <label class="label">Nombre</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" id="{{ form.nombre.name }}" name="{{ form.nombre.name }}" placeholder="{{ form.nombre.name }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user is-dark"></i></span>
+            </div>
+            {% if form.nombre.errors %}
+              <p class="help is-danger is-dark">{{ form.nombre.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="field">
+            <label class="label">Apellido</label>
+            <div class="control has-icons-left">
+              <input type="text" class="input" id="{{ form.apellido.name }}" name="{{ form.apellido.name }}" placeholder="{{ form.apellido.name }}" />
+              <span class="icon is-small is-left"><i class="fas fa-user is-dark"></i></span>
+            </div>
+            {% if form.apellido.errors %}
+              <p class="help is-danger is-dark">{{ form.apellido.errors|first }}</p>
+            {% endif %}
+          </div>
+
+          <div class="field">
+            <label class="label">Correo</label>
+            <div class="control has-icons-left">
+              <input type="email" class="input" id="{{ form.correo.name }}" name="{{ form.correo.name }}" placeholder="{{ form.correo.name }}" />
+              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
+            </div>
+            {% if form.correo.errors %}
+              <p class="help is-danger is-dark">{{ form.correo.errors|first }}</p>
+            {% endif %}
+          </div>
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label">Contraseña</label>
+                <div class="control has-icons-left">
+                  <input type="password" class="input" id="{{ form.contrasena.name }}" name="{{ form.contrasena.name }}" />
+                  <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+                </div>
+
+                {% if form.contrasena.errors %}
+                  <p class="help is-danger is-dark">{{ form.contrasena.errors|first }}</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="column" style="display: flex;align-items: end;">
+              <div class="control is-right">
+                <button class="button toggle-password" type="button"><span class="icon is-small"><i class="fas fa-eye"></i></span></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <div class="control" style="margin: 0 auto;">
+              <button type="submit" class="button is-link">Crear</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

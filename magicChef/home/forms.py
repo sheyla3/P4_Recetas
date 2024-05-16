@@ -2,6 +2,8 @@
 from django import forms
 from django.contrib.auth import authenticate
 from .models import *
+from django.core.exceptions import ValidationError
+import datetime
 
 class RegistroUsuarioForm(forms.ModelForm):
     contrasena = forms.CharField(widget=forms.PasswordInput)
@@ -11,8 +13,6 @@ class RegistroUsuarioForm(forms.ModelForm):
         fields = ['apodo', 'nombre', 'apellido', 'correo', 'contrasena']
         
 class EditarUsuarioForm(forms.ModelForm):
-    contrasena = forms.CharField(widget=forms.PasswordInput)
-
     class Meta:
         model = Usuario
         fields = ['apodo', 'nombre', 'apellido', 'correo']
@@ -48,3 +48,14 @@ class AdminLoginForm(forms.Form):
         except Admin.DoesNotExist:
             raise forms.ValidationError("Usuario o contraseña incorrectos")
         return self.cleaned_data
+
+class CrearRecetaForm(forms.ModelForm):
+    class Meta:
+        model = Receta
+        fields = ['titulo', 'descripcion', 'tipo', 'pasos', 'autor', 'fecha_subida']
+        
+    def clean_fecha_subida(self):
+        fecha_subida = self.cleaned_data['fecha_subida']
+        if fecha_subida > datetime.date.today():
+            raise ValidationError("La fecha de publicación no puede ser una fecha futura.")
+        return fecha_subida
