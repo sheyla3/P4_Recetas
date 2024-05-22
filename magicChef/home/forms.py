@@ -52,13 +52,16 @@ class AdminLoginForm(forms.Form):
 class CrearRecetaForm(forms.ModelForm):
     class Meta:
         model = Receta
-        fields = ['titulo', 'descripcion', 'tipo', 'pasos', 'autor', 'fecha_subida']
-        
-    def clean_fecha_subida(self):
-        fecha_subida = self.cleaned_data['fecha_subida']
-        if fecha_subida > datetime.date.today():
-            raise ValidationError("La fecha de publicación no puede ser una fecha futura.")
-        return fecha_subida
+        fields = ['titulo', 'descripcion', 'tipo', 'pasos', 'autor', 'fecha_subida', 'activo']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'input'}),
+            'descripcion': forms.Textarea(attrs={'class': 'textarea'}),
+            'tipo': forms.Select(attrs={'class': 'select'}),
+            'pasos': forms.Textarea(attrs={'class': 'textarea'}),
+            'autor': forms.HiddenInput(),
+            'fecha_subida': forms.HiddenInput(),
+            'activo': forms.HiddenInput(),
+        }
     
 class AnadirIngredienteForm(forms.ModelForm):
     class Meta:
@@ -70,5 +73,8 @@ class AnadirIngrRecetaForm(forms.ModelForm):
         model = IngredienteReceta
         fields = ['id_receta', 'id_ingrediente', 'cantidad']
         
-class CantidadIngForm(forms.Form):
-    cantidad_ingredientes = forms.IntegerField()
+class ListaCompraForm(forms.ModelForm):
+    class Meta:
+        model = ListaCompra
+        fields = ['lista']
+        widgets = {'lista': forms.Textarea(attrs={'class': 'textarea'})}

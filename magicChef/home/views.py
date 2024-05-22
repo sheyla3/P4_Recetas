@@ -105,17 +105,21 @@ def perfilEditar(request):
 def receta(request):
     user = request.user
     fechaActual = datetime.date.today()
+    
     if request.method == 'POST':
         form = CrearRecetaForm(request.POST)
         if form.is_valid():
-            form.save()
+            receta = form.save(commit=False)
+            receta.autor = user.apodo  # O el campo correspondiente del usuario
+            receta.fecha_subida = fechaActual
+            receta.save()
             request.session['ultima_receta'] = receta.id_receta
             return redirect('comprobacionIng')
         else:
-            messages.success(request, 'Error al crear receta')
-            return redirect('receta')
+            messages.error(request, 'Error al crear receta')
     else:
-        form = CrearRecetaForm()
+        form = CrearRecetaForm(initial={'autor': user.apodo, 'fecha_subida': fechaActual, 'activo': True})
+    
     return render(request, 'recetas.html', {'form': form, 'user': user, 'fechaActual': fechaActual})
 
 @login_required
@@ -138,7 +142,7 @@ def comprobacionIng(request):
 @login_required
 def anadirIng(request):
     if 'ultima_receta' in request.session:
-        id_ultima_receta = 1 #request.session['ultima_receta']
+        id_ultima_receta = request.session['ultima_receta']
     else:
         id_ultima_receta = Receta.objects.last()
     if request.method == 'POST':
@@ -164,10 +168,47 @@ def anadirIng(request):
 @login_required
 def lista(request):
     user = request.user
-    ingredientes = Ingrediente.objects.all()
-    return render(request, 'perfil.html', {'user': user, 'ingredientes': ingredientes})
+    listas = ListaCompra.objects.filter(id_usuario=user)
+    if not listas:
+        message = "No hay listas"
+    else:
+        message = None
+    return render(request, 'lista.html', {'user': user, 'listas': listas, 'message': message})
 
-def AdminHome(request):
+@login_required
+def crear_lista(request):
+    if request.method == 'POST':
+        form = ListaCompraForm(request.POST)
+        if form.is_valid():
+            nueva_lista = form.save(commit=False)
+            nueva_lista.id_usuario = request.user
+            nueva_lista.save()
+            return redirect('lista')
+    else:
+        form = ListaCompraForm()
+    return render(request, 'crear_lista.html', {'form': form})
+
+@login_required
+def eliminar_lista(request, id_lista):
+    lista = get_object_or_404(ListaCompra, id_lista=id_lista, id_usuario=request.user)
+    if request.method == 'POST':
+        lista.delete()
+        return redirect('lista')
+    return render(request, 'eliminar_lista.html', {'lista': lista})
+
+def biblioteca(request, categoria):
     user = request.user
-    recetas = Receta.objects.all()
-    return render(request, 'homeAdmin.html', {'recetas': recetas, 'user': user})
+    recetas = Receta.objects.filter(tipo=categoria)
+    return render(request, 'biblioteca.html', {'recetas': recetas, 'user': user, 'categoria': categoria})
+
+def detallesReceta(request, id):
+    receta = get_object_or_404(Receta, pk=id)
+    ingredientes = IngredienteReceta.objects.filter(id_receta=receta)
+    fotos = Foto.objects.filter(id_receta=receta)
+    
+    context = {
+        'receta': receta,
+        'ingredientes': ingredientes,
+        'fotos': fotos,
+    }
+    return render(request, 'detalles_receta.html', context)

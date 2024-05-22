@@ -58,35 +58,25 @@
         <form method="POST">
           {% csrf_token %}
           <div class="field">
-            <label class="label">Titulo</label>
-            <div class="control">
-              <input type="text" class="input" id="{{ form.titulo.name }}" name="{{ form.titulo.name }}" placeholder="{{ form.titulo.name }}" />
-            </div>
+            {{ form.titulo.label_tag }}
+            <div class="control">{{ form.titulo }}</div>
             {% if form.titulo.errors %}
               <p class="help is-danger is-dark">{{ form.titulo.errors|first }}</p>
             {% endif %}
           </div>
 
           <div class="field">
-            <label class="label">Descripcion</label>
-            <div class="control">
-              <textarea class="textarea" placeholder="..." id="{{ form.descripcion.name }}" name="{{ form.descripcion.name }}"></textarea>
-            </div>
+            {{ form.descripcion.label_tag }}
+            <div class="control">{{ form.descripcion }}</div>
             {% if form.descripcion.errors %}
               <p class="help is-danger is-dark">{{ form.descripcion.errors|first }}</p>
             {% endif %}
           </div>
 
           <div class="field">
-            <label class="label">Tipo de plato</label>
+            {{ form.tipo.label_tag }}
             <div class="control">
-              <div class="select is-miltiple">
-                <select name="{{ form.tipo.name }}" id="{{ form.tipo.name }}">
-                  {% for choice in form.tipo.field.choices %}
-                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-                  {% endfor %}
-                </select>
-              </div>
+              <div class="select is-multiple">{{ form.tipo }}</div>
             </div>
             {% if form.tipo.errors %}
               <p class="help is-danger is-dark">{{ form.tipo.errors|first }}</p>
@@ -94,22 +84,15 @@
           </div>
 
           <div class="field">
-            <label class="label">Pasos</label>
-            <div class="control">
-              <textarea class="textarea" placeholder="..." id="{{ form.pasos.name }}" name="{{ form.pasos.name }}"></textarea>
-            </div>
+            {{ form.pasos.label_tag }}
+            <div class="control">{{ form.pasos }}</div>
             {% if form.pasos.errors %}
               <p class="help is-danger is-dark">{{ form.pasos.errors|first }}</p>
             {% endif %}
           </div>
-
-          <div class="field">
-            <input type="hidden" id="{{ form.autor.name }}" name="{{ form.autor.name }}" value="{{ user.apodo }}" />
-          </div>
-          <div class="field">
-            <input type="hidden" id="{{ form.fecha_subida.name }}" name="{{ form.fecha_subida.name }}" value="{{ fechaActual }}" />
-          </div>
-
+          {{ form.autor }}
+          {{ form.fecha_subida }}
+          {{ form.activo }}
           <div class="field is-grouped">
             <div class="control" style="margin: 0 auto;">
               <button type="submit" class="button is-link">Crear</button>

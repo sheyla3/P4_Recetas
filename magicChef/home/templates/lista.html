@@ -1,0 +1,25 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Listas de Compras
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <h1>Bienvenido, {{ user.apodo }}</h1>
+  <a href="{% url 'crear_lista' %}">Crear nueva lista</a>
+  <hr />
+  {% if message %}
+    <p>{{ message }}</p>
+  {% else %}
+    {% for lista in listas %}
+      <div class="card">
+        <p>{{ lista.lista }}</p>
+        <form method="post" action="{% url 'eliminar_lista' lista.id_lista %}">
+          {% csrf_token %}
+          <button type="submit">Eliminar</button>
+        </form>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

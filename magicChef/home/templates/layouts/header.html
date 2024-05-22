@@ -1,19 +1,14 @@
 {% load static %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // Get all "navbar-burger" elements
     var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
   
-    // Check if there are any nav burgers
     if ($navbarBurgers.length > 0) {
-      // Add a click event on each of them
       $navbarBurgers.forEach(function ($el) {
         $el.addEventListener('click', function () {
-          // Get the target from the "data-target" attribute
           var target = $el.dataset.target
           var $target = document.getElementById(target)
   
-          // Toggle the class on both the "navbar-burger" and the "navbar-menu"
           $el.classList.toggle('is-active')
           $target.classList.toggle('is-active')
         })
@@ -26,10 +21,10 @@
   <div class="navbar-brand">
     <a class="navbar-item" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="logo magic chef" width="auto" height="auto" /></a>
     <div class="navbar-burger js-burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span>
+      <span></span><span></span>
+      <span></span><span></span>
+      <span></span><span></span>
     </div>
   </div>
 
@@ -41,33 +36,16 @@
           <div class="container is-fluid">
             <div class="columns is-multiline">
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Fáciles</a>
+                <a href="{% url 'biblioteca' 'Fáciles' %}" class="p-2 mx-5 dropdown-item">Fáciles</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Postres</a>
+                <a href="{% url 'biblioteca' 'Postres' %}" class="p-2 mx-5 dropdown-item">Postres</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Pollo y Carne</a>
+                <a href="{% url 'biblioteca' 'Pollo y Carne' %}" class="p-2 mx-5 dropdown-item">Pollo y Carne</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Recetas a la Parrilla</a>
-              </div>
-            </div>
-          </div>
-          <hr class="navbar-divider" />
-          <div class="container is-fluid">
-            <div class="columns">
-              <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Ensaladas</a>
-              </div>
-              <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Guarniciones</a>
-              </div>
-              <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Pescados y Mariscos</a>
-              </div>
-              <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Recetas de Pastas</a>
+                <a href="{% url 'biblioteca' 'Recetas a la Parrilla' %}" class="p-2 mx-5 dropdown-item">Recetas a la Parrilla</a>
               </div>
             </div>
           </div>
@@ -75,16 +53,16 @@
           <div class="container is-fluid">
             <div class="columns">
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Comida para Niños</a>
+                <a href="{% url 'biblioteca' 'Ensaladas' %}" class="p-2 mx-5 dropdown-item">Ensaladas</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Postres para Niños</a>
+                <a href="{% url 'biblioteca' 'Guarniciones' %}" class="p-2 mx-5 dropdown-item">Guarniciones</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Sopas</a>
+                <a href="{% url 'biblioteca' 'Pescados y Mariscos' %}" class="p-2 mx-5 dropdown-item">Pescados y Mariscos</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Desayunos</a>
+                <a href="{% url 'biblioteca' 'Recetas de Pastas' %}" class="p-2 mx-5 dropdown-item">Recetas de Pastas</a>
               </div>
             </div>
           </div>
@@ -92,28 +70,44 @@
           <div class="container is-fluid">
             <div class="columns">
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Panes</a>
+                <a href="{% url 'biblioteca' 'Comida para Niños' %}" class="p-2 mx-5 dropdown-item">Comida para Niños</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Salsas</a>
+                <a href="{% url 'biblioteca' 'Postres para Niños' %}" class="p-2 mx-5 dropdown-item">Postres para Niños</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Bebidas</a>
+                <a href="{% url 'biblioteca' 'Sopas' %}" class="p-2 mx-5 dropdown-item">Sopas</a>
               </div>
               <div class="column">
-                <a href="#" class="p-2 mx-5 dropdown-item">Platos Fuertes</a>
+                <a href="{% url 'biblioteca' 'Desayunos' %}" class="p-2 mx-5 dropdown-item">Desayunos</a>
+              </div>
+            </div>
+          </div>
+          <hr class="navbar-divider" />
+          <div class="container is-fluid">
+            <div class="columns">
+              <div class="column">
+                <a href="{% url 'biblioteca' 'Panes' %}" class="p-2 mx-5 dropdown-item">Panes</a>
+              </div>
+              <div class="column">
+                <a href="{% url 'biblioteca' 'Salsas' %}" class="p-2 mx-5 dropdown-item">Salsas</a>
+              </div>
+              <div class="column">
+                <a href="{% url 'biblioteca' 'Bebidas' %}" class="p-2 mx-5 dropdown-item">Bebidas</a>
+              </div>
+              <div class="column">
+                <a href="{% url 'biblioteca' 'Platos Fuertes' %}" class="p-2 mx-5 dropdown-item">Platos Fuertes</a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <input class="input is-normal mt-2 navbar-item" type="text" placeholder="Buscar por receta o ingrediente" />
     </div>
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
           <a class="button is-white" href="{% url 'login' %}">Log in</a>
-          <a class="button" href="{% url 'registro' %}" style="background-color: #9BF1E6;"><strong>Sign up</strong></a>
+          <a class="button" href="{% url 'registro' %}" style="background-color: {% url 'biblioteca' 'Fáciles' %}9BF1E6;"><strong>Sign up</strong></a>
         </div>
       </div>
     </div>

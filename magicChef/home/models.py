@@ -10,7 +10,7 @@ string_regex =  RegexValidator(regex=r'^[a-zA-Z]+(?:\s[a-zA-Z]+)*$', message="Ca
 class Receta(models.Model):
     id_receta = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=50, validators=[string_regex])
-    descripcion = models.CharField(max_length=500)
+    descripcion = models.CharField(max_length=5000)
     TIPOS_CHOICES = (
         ('Fáciles', 'Fáciles'),
         ('Postres', 'Postres'),
@@ -30,7 +30,7 @@ class Receta(models.Model):
         ('Platos Fuertes', 'Platos Fuertes'),
     )
     tipo = models.CharField(max_length=50, choices=TIPOS_CHOICES)
-    pasos = models.CharField(max_length=1000, validators=[string_regex])
+    pasos = models.CharField(max_length=5000, validators=[string_regex])
     autor = models.CharField(max_length=50, validators=[string_regex])
     fecha_subida = models.DateField()
     activo = models.BooleanField(default=False)
@@ -114,6 +114,9 @@ class ListaCompra(models.Model):
     id_lista = models.AutoField(primary_key=True)
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     lista = models.CharField(max_length=1000)
+    
+    def __str__(self):
+        return self.lista
 
 class Admin(models.Model):
     id_admin = models.AutoField(primary_key=True)

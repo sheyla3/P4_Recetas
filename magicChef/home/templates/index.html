@@ -1,47 +1,90 @@
 {% extends 'core/baseUser.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}
+  Home
+{% endblock %}
 
 {% block content %}
   {% load static %}
-
-  <section class="hero is-medium has-carousel">
-    <div id="carousel-demo" class="hero-carousel">
-      <div class="item-1">
-        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
-      </div>
-      <div class="item-2">
-        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
-      </div>
-      <div class="item-3">
-        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
-      </div>
+  <section class="hero is-medium mb-4" style="background-image: url({% static 'img/slider1.png' %});">
+    <div class="hero-body">
+      <p class="title is-1 has-text-white">No sabes que cocinar?</p>
+      <p class="subtitle is-2 has-text-white">Busca y crea delicias</p>
     </div>
   </section>
-  <script>
-    bulmaCarousel.attach('#carousel-demo', {
-      slidesToScroll: 1,
-      slidesToShow: 4
-    })
-  </script>
   <div class="container is-max-widescreen">
-    <table class="table is-striped is-hoverable tablaHome">
-      <thead>
-        <tr>
-          <th class="px-4 py-2">Título</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for receta in recetas %}
-          <tr class="font-bold underline">
-            <td class="border px-4 py-2">{{ receta.titulo }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <div>
-      <p>Welcome, {{ user.nombre }}</p>
-      <p>Email: {{ user.correo }}</p>
-    </div>
+    {% for receta in recetas %}
+      <div class="card ml-3">
+        <img src="{% static 'img/slider1.png' %}" alt="slider foto comida" />
+        <div class="card__content">
+          <p class="card__title">{{ receta.titulo }}</p>
+          <p class="card__description">{{ receta.descripcion }}</p>
+          <button class="card__button">Ver receta</button>
+        </div>
+      </div>
+    {% endfor %}
   </div>
+  <style>
+    .card {
+      position: relative;
+      width: 350px;
+      aspect-ratio: 16/9;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      perspective: 1000px;
+      box-shadow: 0 0 0 5px #ffffff80;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card img {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 100%;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+    }
+    .card__content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: #f2f2f2;
+      transform: rotateX(-90deg);
+      transform-origin: bottom;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card:hover .card__content {
+      transform: rotateX(0deg);
+    }
+    .card__title {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+      font-weight: 700;
+    }
+    .card__description {
+      margin: 10px 0 10px;
+      font-size: 12px;
+      color: #777;
+      line-height: 1.4;
+    }
+    .card__button {
+      padding: 3px;
+      border-radius: 8px;
+      background-color: #f8d662;
+      border: none;
+      color: white;
+    }
+  </style>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+{{ receta.titulo }}
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <div class="container is-max-widescreen my-5">
+    <h1>{{ receta.titulo }}</h1>
+    <p>{{ receta.descripcion }}</p>
+
+    <h2>Ingredientes</h2>
+    <ul>
+        {% for ingrediente in ingredientes %}
+            <li>{{ ingrediente.id_ingrediente.nombre }}: {{ ingrediente.cantidad }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Fotos</h2>
+    <div>
+        {% for foto in fotos %}
+            <img src="{{ foto.foto.url }}" alt="Foto de {{ receta.titulo }}">
+        {% endfor %}
+    </div>
+  </div>
+{% endblock %}

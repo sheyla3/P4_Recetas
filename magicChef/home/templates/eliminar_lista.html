@@ -1,0 +1,16 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Eliminar Lista
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <h1>Eliminar Lista</h1>
+    <p>¿Estás seguro que deseas eliminar la lista "{{ lista.lista }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Eliminar</button>
+    </form>
+    <a href="{% url 'lista' %}">Volver</a>
+{% endblock %}

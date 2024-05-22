@@ -1,0 +1,16 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Crear Lista
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <h1>Crear Nueva Lista</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear</button>
+  </form>
+  <a href="{% url 'lista' %}">Volver</a>
+{% endblock %}

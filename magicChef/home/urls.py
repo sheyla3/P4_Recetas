@@ -28,16 +28,16 @@ urlpatterns = [
     path('receta/', view=receta, name="receta"),
     path('perfilEditar/', view=perfilEditar, name="perfilEditar"),
     path('lista/', view=lista, name="lista"),
+    path('lista/crear/', crear_lista, name='crear_lista'),
+    path('lista/eliminar/<int:id_lista>/', eliminar_lista, name='eliminar_lista'),
     path('comprobacionIng/', view=comprobacionIng, name="comprobacionIng"),
     path('anadirIng/', view=anadirIng, name="anadirIng"),
+    path('detallesReceta/<int:id>/', detallesReceta, name="detallesReceta"),
+    path('biblioteca/<str:categoria>/', view=biblioteca, name="biblioteca"),
     
     path('reset_password',auth_views.PasswordResetView.as_view(template_name='passwords/password_reset_form.html'),name="reset_password"),
     path('reset_password_sent',auth_views.PasswordResetDoneView.as_view(template_name='passwords/password_reset_done.html'),name="password_reset_done"),
     path('reset/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='passwords/password_reset_confirm.html'),name="password_reset_confirm"),
     path('reset_password_complete',auth_views.PasswordResetCompleteView.as_view(template_name='passwords/password_reset_complete.html'),name="password_reset_complete"),
-    
-    path('AdminHome/', view=AdminHome, name="AdminHome"),
-    path('loginAdmin/', view=inicioAdmin, name="loginAdmin"),
-    
 ]
 
