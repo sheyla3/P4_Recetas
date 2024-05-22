@@ -1,0 +1,138 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Añadir Ingredientes
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <style>
+    body {
+      background-color: #f8d662;
+    }
+  </style>
+  <div class="container mb-5">
+    <div class="box mt-5 mx-5">
+      <div class="mb-3">
+        <ul class="steps has-content-centered">
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 1</p>
+              <p>Datos de la receta</p>
+            </div>
+          </li>
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 2</p>
+              <p>Comprobacion de ingredientes</p>
+            </div>
+          </li>
+          <li class="steps-segment is-active">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 3</p>
+              <p>Añadir ingredientes a la receta</p>
+            </div>
+          </li>
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 4</p>
+              <p>Añadir fotos</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-6">
+        {% if messages %}
+          <div class="notification is-warning is-light">
+            <button class="delete"></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="POST" id="ingredient-forms-container">
+          {% csrf_token %}
+          <input type="hidden" id="{{ form.id_receta.name }}" name="{{ form.id_receta.name }}" value="{{ id_ultima_receta }}" />
+          <div id="ingredients-container">
+            <div class="ingredient-row">
+              <div class="columns">
+                <div class="column">
+                  <div class="field">
+                    <label class="label">Ingrediente</label>
+                    <div class="control">
+                      <input class="input" type="text" name="ingredientes[0][id_ingrediente]" list="ingredientes-list" />
+                      <datalist id="ingredientes-list">
+                        {% for ingrediente in ingredientes %}
+                          <option value="{{ ingrediente.id_ingrediente }}">{{ ingrediente.nombre_ingrediente }}</option>
+                        {% endfor %}
+                      </datalist>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label">Cantidad</label>
+                    <div class="control">
+                      <input type="text" class="input" name="ingredientes[0][cantidad]" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="field is-grouped">
+            <div class="control" style="margin: 0 auto;">
+              <button id="add-ingredient-form" type="button" class="button is-link">Agregar ingrediente</button>
+              <button type="submit" class="button is-link">Agregar</button>
+            </div>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('ingredients-container');
+      const addIngredientButton = document.getElementById('add-ingredient-form');
+      let ingredientIndex = 1;
+  
+      addIngredientButton.addEventListener('click', function() {
+        const newIngredientRow = document.createElement('div');
+        newIngredientRow.classList.add('ingredient-row');
+  
+        newIngredientRow.innerHTML = `
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label">Ingrediente</label>
+                <div class="control">
+                  <input class="input" type="text" name="ingredientes[${ingredientIndex}][id_ingrediente]" list="ingredientes-list" />
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="field">
+                <label class="label">Cantidad</label>
+                <div class="control">
+                  <input type="text" class="input" name="ingredientes[${ingredientIndex}][cantidad]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+  
+        container.appendChild(newIngredientRow);
+        ingredientIndex++;
+      });
+    });
+  </script>  
+{% endblock %}

@@ -29,6 +29,7 @@ urlpatterns = [
     path('perfilEditar/', view=perfilEditar, name="perfilEditar"),
     path('lista/', view=lista, name="lista"),
     path('comprobacionIng/', view=comprobacionIng, name="comprobacionIng"),
+    path('anadirIng/', view=anadirIng, name="anadirIng"),
     
     path('reset_password',auth_views.PasswordResetView.as_view(template_name='passwords/password_reset_form.html'),name="reset_password"),
     path('reset_password_sent',auth_views.PasswordResetDoneView.as_view(template_name='passwords/password_reset_done.html'),name="password_reset_done"),

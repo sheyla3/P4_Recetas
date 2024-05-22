@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import check_password as django_check_password , make_password
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, Group, Permission, BaseUserManager, PermissionsMixin
+from django.utils.translation import gettext as _
 
 email_regex = RegexValidator(regex=r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+', message="Email invalido tiene que tener @ y . ")
 string_regex =  RegexValidator(regex=r'^[a-zA-Z]+(?:\s[a-zA-Z]+)*$', message="Caracteres especiales como (~!#^`'$|{}<>*) no se permiten.")
@@ -71,7 +72,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     correo = models.EmailField(unique=True)
-    contrasena = models.CharField(max_length=500, default='pbkdf2_sha256$720000$Ale5AHYM7ov5dQowBafgOK$7cSmwSi0T73M/dUNfw7mLK79ZQsolJVJA1tdF5BIfQU=')
+    contrasena = models.CharField(max_length=500)
     last_login = models.DateTimeField(auto_now=True)
 
     is_active = models.BooleanField(default=True)
@@ -81,6 +82,27 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'correo'
     REQUIRED_FIELDS = ['nombre', 'apellido']
+
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=_('groups'),
+        blank=True,
+        help_text=_(
+            'The groups this user belongs to. A user will get all permissions '
+            'granted to each of their groups.'
+        ),
+        related_name="usuarios",
+        related_query_name="usuario",
+    )
+
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_('user permissions'),
+        blank=True,
+        help_text=_('Specific permissions for this user.'),
+        related_name="usuarios",
+        related_query_name="usuario",
+    )
 
     def __str__(self):
         return self.correo

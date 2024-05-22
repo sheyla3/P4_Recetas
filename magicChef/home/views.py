@@ -109,6 +109,7 @@ def receta(request):
         form = CrearRecetaForm(request.POST)
         if form.is_valid():
             form.save()
+            request.session['ultima_receta'] = receta.id_receta
             return redirect('comprobacionIng')
         else:
             messages.success(request, 'Error al crear receta')
@@ -123,16 +124,42 @@ def comprobacionIng(request):
     ingredientes = Ingrediente.objects.all()
     fechaActual = datetime.date.today()
     if request.method == 'POST':
-        form = CrearRecetaForm(request.POST)
+        form = AnadirIngredienteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('comprobacionIng')
         else:
             messages.success(request, 'Error al crear receta')
             return redirect('comprobacionIng')
     else:
-        form = CrearRecetaForm()
+        form = AnadirIngredienteForm()
     return render(request, 'comprobacionIng.html', {'form': form, 'user': user, 'fechaActual': fechaActual, 'ingredientes': ingredientes})
+
+@login_required
+def anadirIng(request):
+    if 'ultima_receta' in request.session:
+        id_ultima_receta = 1 #request.session['ultima_receta']
+    else:
+        id_ultima_receta = Receta.objects.last()
+    if request.method == 'POST':
+        id_receta = request.POST.get('id_receta')
+        ingredientes_data = request.POST.getlist('ingredientes')
+        
+        for ingrediente_data in ingredientes_data:
+            id_ingrediente = ingrediente_data.get('id_ingrediente')
+            cantidad = ingrediente_data.get('cantidad')
+
+            if id_ingrediente and cantidad:
+                IngredienteReceta.objects.create(
+                    id_receta_id=id_receta,
+                    id_ingrediente_id=id_ingrediente,
+                    cantidad=cantidad
+                )
+        return redirect('anadirIng')
+
+    ingredientes = Ingrediente.objects.all()
+    return render(request, 'anadirIng.html', {'ingredientes': ingredientes, 'form': AnadirIngrRecetaForm(), 'id_ultima_receta': id_ultima_receta })
+
 
 @login_required
 def lista(request):

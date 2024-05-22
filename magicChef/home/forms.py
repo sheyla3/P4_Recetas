@@ -59,3 +59,16 @@ class CrearRecetaForm(forms.ModelForm):
         if fecha_subida > datetime.date.today():
             raise ValidationError("La fecha de publicación no puede ser una fecha futura.")
         return fecha_subida
+    
+class AnadirIngredienteForm(forms.ModelForm):
+    class Meta:
+        model = Ingrediente
+        fields = ['nombre_ingrediente']
+        
+class AnadirIngrRecetaForm(forms.ModelForm):
+    class Meta:
+        model = IngredienteReceta
+        fields = ['id_receta', 'id_ingrediente', 'cantidad']
+        
+class CantidadIngForm(forms.Form):
+    cantidad_ingredientes = forms.IntegerField()

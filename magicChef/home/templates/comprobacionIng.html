@@ -66,16 +66,25 @@
           <p class="title is-2" style="text-align:center;">Están todos tus ingredientes?</p>
           <div class="columns is-mobile">
             <div class="column">
-              <a class="button is-success is-medium is-responsive has-text-white" style="float: right;">Sí</a>
+              <a href="{% url 'anadirIng' %}" class="button is-success is-medium is-responsive has-text-white" style="float: right;">Sí</a>
             </div>
             <div class="column">
               <button class="button is-danger is-medium is-responsive has-text-white" id="no-btn">No</button>
             </div>
           </div>
-          <form id="add-ingredients-form" style="display: none;">
-            <label for="missing-ingredients">Ingredientes faltantes:</label>
-            <input type="text" id="missing-ingredients" name="missing-ingredients" />
-            <button type="submit">Agregar</button>
+          <form id="add-ingredients-form" style="display: none;" method="POST">
+            {% csrf_token %}
+            <div class="field">
+              <label class="label">Ingrediente faltante</label>
+              <div class="control">
+                <input type="text" class="input" id="{{ form.nombre_ingrediente.name }}" name="{{ form.nombre_ingrediente.name }}" placeholder="{{ form.correo.name }}" />
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control" style="margin: 0 auto;">
+                <button type="submit" class="button is-link">Agregar</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
