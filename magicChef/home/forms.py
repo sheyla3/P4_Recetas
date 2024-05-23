@@ -3,7 +3,6 @@ from django import forms
 from django.contrib.auth import authenticate
 from .models import *
 from django.core.exceptions import ValidationError
-import datetime
 
 class RegistroUsuarioForm(forms.ModelForm):
     contrasena = forms.CharField(widget=forms.PasswordInput)
@@ -34,30 +33,15 @@ class UserLoginForm(forms.Form):
             raise forms.ValidationError("Correo o contraseña incorrectos")
         return self.cleaned_data
 
-class AdminLoginForm(forms.Form):
-    usuario = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input'}))
-
-    def clean(self):
-        usuario = self.cleaned_data.get('usuario')
-        password = self.cleaned_data.get('contrasena')
-        try:
-            admin_user = Admin.objects.get(usuario__correo=usuario)
-            if not admin_user.check_password(password):
-                raise forms.ValidationError("Usuario o contraseña incorrectos")
-        except Admin.DoesNotExist:
-            raise forms.ValidationError("Usuario o contraseña incorrectos")
-        return self.cleaned_data
-
 class CrearRecetaForm(forms.ModelForm):
     class Meta:
         model = Receta
         fields = ['titulo', 'descripcion', 'tipo', 'pasos', 'autor', 'fecha_subida', 'activo']
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'input'}),
-            'descripcion': forms.Textarea(attrs={'class': 'textarea'}),
+            'descripcion': forms.Textarea(attrs={'class': 'textarea','rows': '3'}),
             'tipo': forms.Select(attrs={'class': 'select'}),
-            'pasos': forms.Textarea(attrs={'class': 'textarea'}),
+            'pasos': forms.Textarea(attrs={'class': 'textarea','rows': '3'}),
             'autor': forms.HiddenInput(),
             'fecha_subida': forms.HiddenInput(),
             'activo': forms.HiddenInput(),
@@ -77,4 +61,30 @@ class ListaCompraForm(forms.ModelForm):
     class Meta:
         model = ListaCompra
         fields = ['lista']
-        widgets = {'lista': forms.Textarea(attrs={'class': 'textarea'})}
+        widgets = {'lista': forms.Textarea(attrs={'class': 'textarea', 'rows': '3'})}
+        
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['comentario', 'calificacion']
+        widgets = {
+            'comentario': forms.Textarea(attrs={'class': 'textarea', 'rows': '2'}),
+            'calificacion': forms.RadioSelect(choices=[(i, f'{i} estrella{"s" if i > 1 else ""}') for i in range(1, 5)])
+        }
+        
+"""
+class AdminLoginForm(forms.Form):
+    usuario = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input'}))
+
+    def clean(self):
+        usuario = self.cleaned_data.get('usuario')
+        password = self.cleaned_data.get('contrasena')
+        try:
+            admin_user = Admin.objects.get(usuario__correo=usuario)
+            if not admin_user.check_password(password):
+                raise forms.ValidationError("Usuario o contraseña incorrectos")
+        except Admin.DoesNotExist:
+            raise forms.ValidationError("Usuario o contraseña incorrectos")
+        return self.cleaned_data
+"""

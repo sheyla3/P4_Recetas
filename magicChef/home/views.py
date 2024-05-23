@@ -201,14 +201,30 @@ def biblioteca(request, categoria):
     recetas = Receta.objects.filter(tipo=categoria)
     return render(request, 'biblioteca.html', {'recetas': recetas, 'user': user, 'categoria': categoria})
 
-def detallesReceta(request, id):
-    receta = get_object_or_404(Receta, pk=id)
+def detallesReceta(request, id_receta):
+    user = request.user
+    receta = get_object_or_404(Receta, pk=id_receta)
     ingredientes = IngredienteReceta.objects.filter(id_receta=receta)
     fotos = Foto.objects.filter(id_receta=receta)
-    
+    comentarios = Comentario.objects.filter(id_receta=receta).order_by('-fecha_creacion')
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.id_receta = receta
+            comentario.usuario = user
+            comentario.save()
+            return redirect('detallesReceta', id_receta=receta.id_receta)
+    else:
+        form = ComentarioForm()
+
     context = {
         'receta': receta,
         'ingredientes': ingredientes,
         'fotos': fotos,
+        'comentarios': comentarios,
+        'form': form,
+        'user': user
     }
     return render(request, 'detalles_receta.html', context)

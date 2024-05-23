@@ -32,7 +32,7 @@ urlpatterns = [
     path('lista/eliminar/<int:id_lista>/', eliminar_lista, name='eliminar_lista'),
     path('comprobacionIng/', view=comprobacionIng, name="comprobacionIng"),
     path('anadirIng/', view=anadirIng, name="anadirIng"),
-    path('detallesReceta/<int:id>/', detallesReceta, name="detallesReceta"),
+    path('detallesReceta/<int:id_receta>/', detallesReceta, name="detallesReceta"),
     path('biblioteca/<str:categoria>/', view=biblioteca, name="biblioteca"),
     
     path('reset_password',auth_views.PasswordResetView.as_view(template_name='passwords/password_reset_form.html'),name="reset_password"),

@@ -50,12 +50,6 @@ class IngredienteReceta(models.Model):
     id_ingrediente = models.ForeignKey(Ingrediente, on_delete=models.CASCADE)
     cantidad = models.CharField(max_length=50)
 
-class Comentario(models.Model):
-    id_comentario = models.AutoField(primary_key=True)
-    comentario = models.CharField(max_length=500)
-    calificacion = models.IntegerField(choices=[(i, i) for i in range(1, 6)], null=True)
-    id_receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
-
 class UsuarioManager(BaseUserManager):
     def create_user(self, correo, nombre, apellido, contrasena=None, **extra_fields):
         if not correo:
@@ -118,8 +112,18 @@ class ListaCompra(models.Model):
     def __str__(self):
         return self.lista
 
+class Comentario(models.Model):
+    id_comentario = models.AutoField(primary_key=True)
+    comentario = models.CharField(max_length=5000)
+    calificacion = models.IntegerField(choices=[(i, i) for i in range(1, 5)], null=True)
+    id_receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
+    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, default=1)
+    fecha_creacion = models.DateTimeField(auto_now=True)
+
+"""
 class Admin(models.Model):
     id_admin = models.AutoField(primary_key=True)
     usuario = models.CharField(max_length=500, unique=True)
     contrasena = models.CharField(max_length=500)
     last_login = models.DateTimeField(auto_now=True)
+"""
