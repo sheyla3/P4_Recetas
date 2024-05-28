@@ -32,19 +32,16 @@ class UserLoginForm(forms.Form):
         if not user:
             raise forms.ValidationError("Correo o contraseña incorrectos")
         return self.cleaned_data
-
+ 
 class CrearRecetaForm(forms.ModelForm):
     class Meta:
         model = Receta
-        fields = ['titulo', 'descripcion', 'tipo', 'pasos', 'autor', 'fecha_subida', 'activo']
+        fields = ['titulo', 'descripcion', 'tipo', 'pasos']
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'input'}),
             'descripcion': forms.Textarea(attrs={'class': 'textarea','rows': '3'}),
             'tipo': forms.Select(attrs={'class': 'select'}),
-            'pasos': forms.Textarea(attrs={'class': 'textarea','rows': '3'}),
-            'autor': forms.HiddenInput(),
-            'fecha_subida': forms.HiddenInput(),
-            'activo': forms.HiddenInput(),
+            'pasos': forms.Textarea(attrs={'class': 'textarea','rows': '3'})
         }
     
 class AnadirIngredienteForm(forms.ModelForm):
@@ -56,7 +53,12 @@ class AnadirIngrRecetaForm(forms.ModelForm):
     class Meta:
         model = IngredienteReceta
         fields = ['id_receta', 'id_ingrediente', 'cantidad']
-        
+
+class AnadirFotoForm(forms.ModelForm):
+    class Meta:
+        model = Foto
+        fields = ['id_receta', 'foto']
+      
 class ListaCompraForm(forms.ModelForm):
     class Meta:
         model = ListaCompra
@@ -69,7 +71,7 @@ class ComentarioForm(forms.ModelForm):
         fields = ['comentario', 'calificacion']
         widgets = {
             'comentario': forms.Textarea(attrs={'class': 'textarea', 'rows': '2'}),
-            'calificacion': forms.RadioSelect(choices=[(i, f'{i} estrella{"s" if i > 1 else ""}') for i in range(1, 5)])
+            'calificacion': forms.RadioSelect()
         }
         
 """

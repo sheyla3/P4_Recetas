@@ -60,25 +60,6 @@ def inicioUsuario(request):
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})
 
-def inicioAdmin(request):
-    if request.method == 'POST':
-        form = AdminLoginForm(request.POST)
-        """""
-        if form.is_valid():
-            usuario = form.cleaned_data.get('usuario')
-            contrasena = form.cleaned_data.get('password')
-            admin = authenticate(request, username=usuario, password=contrasena)
-            print(admin)
-            if admin is not None:
-                login(request, admin)
-                return redirect('AdminHome')
-            else:
-                messages.error(request, 'Credenciales inválidas. '+ admin)
-                return redirect('/loginAdmin/')"""""
-    else:
-        form = AdminLoginForm()
-    return render(request, 'loginAdmin.html', {'form': form})
-
 def cerrarSesion(request):
     logout(request)
     return redirect('home')
@@ -103,6 +84,52 @@ def perfilEditar(request):
 
 @login_required
 def receta(request):
+    user = request.user
+    recetas = Receta.objects.filter(autor=user)
+    return render(request, 'recetas.html', {'recetas': recetas, 'user': user})
+
+@login_required
+def crearReceta(request):
+    user = request.user
+    if request.method == 'POST':
+        form = CrearRecetaForm(request.POST)
+        if form.is_valid():
+            receta = form.save(commit=False)
+            receta.autor = user
+            receta.fecha_subida = timezone.now()
+            receta.activo = False
+            receta.save()
+            messages.success(request, 'Receta creada con éxito.')
+            return redirect('comprobacionIng')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = CrearRecetaForm()
+    return render(request, 'crearReceta.html', {'form': form})
+
+@login_required
+def editarReceta(request, id_receta):
+    user = request.user
+    fechaActual = datetime.date.today()
+    
+    if request.method == 'POST':
+        form = CrearRecetaForm(request.POST)
+        if form.is_valid():
+            receta = form.save(commit=False)
+            receta.autor = user.apodo  # O el campo correspondiente del usuario
+            receta.fecha_subida = fechaActual
+            receta.save()
+            request.session['ultima_receta'] = receta.id_receta
+            return redirect('comprobacionIng')
+        else:
+            messages.error(request, 'Error al crear receta')
+    else:
+        form = CrearRecetaForm(initial={'autor': user.apodo, 'fecha_subida': fechaActual, 'activo': True})
+    
+    return render(request, 'recetas.html', {'form': form, 'user': user, 'fechaActual': fechaActual})
+
+@login_required
+def eliminarReceta(request, id_receta):
     user = request.user
     fechaActual = datetime.date.today()
     
@@ -147,23 +174,42 @@ def anadirIng(request):
         id_ultima_receta = Receta.objects.last()
     if request.method == 'POST':
         id_receta = request.POST.get('id_receta')
-        ingredientes_data = request.POST.getlist('ingredientes')
+        ingredientes_data = request.POST.dict()
         
-        for ingrediente_data in ingredientes_data:
-            id_ingrediente = ingrediente_data.get('id_ingrediente')
-            cantidad = ingrediente_data.get('cantidad')
+        ingredientes = []
+        for key, value in ingredientes_data.items():
+            if key.startswith('ingredientes'):
+                _, index, field = key.split('[')[-1].strip(']').split('][')
+                if field == 'id_ingrediente':
+                    ingredientes.append({'id_ingrediente': value})
+                elif field == 'cantidad':
+                    ingredientes[-1]['cantidad'] = value
+
+        for ingrediente in ingredientes:
+            id_ingrediente = ingrediente.get('id_ingrediente')
+            cantidad = ingrediente.get('cantidad')
 
             if id_ingrediente and cantidad:
                 IngredienteReceta.objects.create(
-                    id_receta_id=id_receta,
-                    id_ingrediente_id=id_ingrediente,
+                    id_receta=id_receta,
+                    id_ingrediente=id_ingrediente,
                     cantidad=cantidad
                 )
-        return redirect('anadirIng')
+        return redirect('anadirFoto')
 
     ingredientes = Ingrediente.objects.all()
     return render(request, 'anadirIng.html', {'ingredientes': ingredientes, 'form': AnadirIngrRecetaForm(), 'id_ultima_receta': id_ultima_receta })
 
+@login_required
+def anadirFoto(request):
+    if 'ultima_receta' in request.session:
+        id_ultima_receta = request.session['ultima_receta']
+    else:
+        id_ultima_receta = Receta.objects.last()
+    if request.method == 'POST':
+        
+        return redirect('receta')
+    return render(request, 'anadirFoto.html', {'form': AnadirFotoForm(), 'id_ultima_receta': id_ultima_receta })
 
 @login_required
 def lista(request):
@@ -207,7 +253,6 @@ def detallesReceta(request, id_receta):
     ingredientes = IngredienteReceta.objects.filter(id_receta=receta)
     fotos = Foto.objects.filter(id_receta=receta)
     comentarios = Comentario.objects.filter(id_receta=receta).order_by('-fecha_creacion')
-
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
         if form.is_valid():
@@ -218,13 +263,16 @@ def detallesReceta(request, id_receta):
             return redirect('detallesReceta', id_receta=receta.id_receta)
     else:
         form = ComentarioForm()
-
-    context = {
-        'receta': receta,
-        'ingredientes': ingredientes,
-        'fotos': fotos,
-        'comentarios': comentarios,
-        'form': form,
-        'user': user
-    }
+        calificacion_titulos = [
+            ('5', 'Excelente!'),
+            ('4', 'Genial!'),
+            ('3', 'Bien'),
+            ('2', 'Normal'),
+            ('1', 'Mal')
+        ]
+        context = {
+            'receta': receta, 'ingredientes': ingredientes,
+            'fotos': fotos, 'comentarios': comentarios,
+            'form': form, 'user': user, 'calificacion_titulos' : calificacion_titulos
+        }
     return render(request, 'detalles_receta.html', context)

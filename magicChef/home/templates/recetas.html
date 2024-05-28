@@ -6,100 +6,15 @@
 
 {% block content %}
   {% load static %}
-  <style>
-    body {
-      background-color: #f18290;
-    }
-  </style>
-  <div class="container mb-5">
-    <div class="box mt-5 mx-5">
-      <div class="mb-3">
-        <ul class="steps has-content-centered">
-          <li class="steps-segment is-active">
-            <span class="steps-marker"></span>
-            <div class="steps-content">
-              <p class="is-size-4">Paso 1</p>
-              <p>Datos de la receta</p>
-            </div>
-          </li>
-          <li class="steps-segment">
-            <span class="steps-marker"></span>
-            <div class="steps-content">
-              <p class="is-size-4">Paso 2</p>
-              <p>Comprobacion de ingredientes</p>
-            </div>
-          </li>
-          <li class="steps-segment">
-            <span class="steps-marker"></span>
-            <div class="steps-content">
-              <p class="is-size-4">Paso 3</p>
-              <p>Añadir ingredientes a la receta</p>
-            </div>
-          </li>
-          <li class="steps-segment">
-            <span class="steps-marker"></span>
-            <div class="steps-content">
-              <p class="is-size-4">Paso 4</p>
-              <p>Añadir fotos</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="mt-6">
-        {% if messages %}
-          <div class="notification is-warning is-light">
-            <button class="delete"></button>
-            {% for message in messages %}
-              {{ message }}
-            {% endfor %}
-          </div>
-        {% endif %}
-        <form method="POST">
-          {% csrf_token %}
-          <div class="field">
-            {{ form.titulo.label_tag }}
-            <div class="control">{{ form.titulo }}</div>
-            {% if form.titulo.errors %}
-              <p class="help is-danger is-dark">{{ form.titulo.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            {{ form.descripcion.label_tag }}
-            <div class="control">{{ form.descripcion }}</div>
-            {% if form.descripcion.errors %}
-              <p class="help is-danger is-dark">{{ form.descripcion.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            {{ form.tipo.label_tag }}
-            <div class="control">
-              <div class="select is-multiple">{{ form.tipo }}</div>
-            </div>
-            {% if form.tipo.errors %}
-              <p class="help is-danger is-dark">{{ form.tipo.errors|first }}</p>
-            {% endif %}
-          </div>
-
-          <div class="field">
-            {{ form.pasos.label_tag }}
-            <div class="control">{{ form.pasos }}</div>
-            {% if form.pasos.errors %}
-              <p class="help is-danger is-dark">{{ form.pasos.errors|first }}</p>
-            {% endif %}
-          </div>
-          {{ form.autor }}
-          {{ form.fecha_subida }}
-          {{ form.activo }}
-          <div class="field is-grouped">
-            <div class="control" style="margin: 0 auto;">
-              <button type="submit" class="button is-link">Crear</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+  <h1>Recetas</h1>
+  <a href="{% url 'crearReceta' %}">Crear nueva receta</a>
+  <ul>
+    {% for receta in recetas %}
+      <li>
+        {{ receta.titulo }}
+        <a href="{% url 'editarReceta' receta.id_receta %}">Editar</a>
+        <a href="{% url 'eliminarReceta' receta.id_receta %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}
