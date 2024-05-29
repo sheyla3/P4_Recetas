@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from home.views import *
 from django.contrib.auth import views as auth_views
+from django.conf import settings
 
 urlpatterns = [
     path('', view=recetasHome, name="home"),
@@ -45,3 +46,5 @@ urlpatterns = [
     path('reset_password_complete',auth_views.PasswordResetCompleteView.as_view(template_name='passwords/password_reset_complete.html'),name="password_reset_complete"),
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

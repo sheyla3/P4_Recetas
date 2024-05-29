@@ -124,12 +124,10 @@ STATICFILES_DIRS = [
 ]
 
 # URL base para servir archivos multimedia
-# # Directorio raíz para los archivos multimedia
+MEDIA_URL = '/media/'
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = [
-    os.path.join(BASE_DIR, 'media'),
-]
+# Directorio raíz para los archivos multimedia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

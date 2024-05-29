@@ -55,23 +55,21 @@
             {% endfor %}
           </div>
         {% endif %}
-
         <form method="POST" id="ingredient-forms-container">
           {% csrf_token %}
-          <input type="hidden" id="{{ form.id_receta.name }}" name="{{ form.id_receta.name }}" value="{{ id_ultima_receta }}" />
+          <input type="hidden" id="{{ form.id_receta.name }}" name="{{ form.id_receta.name }}" value="{{ ultima_receta_id }}" />
           <div id="ingredients-container">
             <div class="ingredient-row">
               <div class="columns">
                 <div class="column">
                   <div class="field">
-                    <label class="label">Ingrediente</label>
+                    <label class="label">Ingredientes para la receta: {{ ultima_receta.titulo }}</label>
                     <div class="control">
-                      <input class="input" type="text" name="ingredientes[0][id_ingrediente]" list="ingredientes-list" />
-                      <datalist id="ingredientes-list">
+                      <select class="ingredient-select select" name="ingredientes[0][id_ingrediente]" style="width: 100%;">
                         {% for ingrediente in ingredientes %}
                           <option value="{{ ingrediente.id_ingrediente }}">{{ ingrediente.nombre_ingrediente }}</option>
                         {% endfor %}
-                      </datalist>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -89,20 +87,24 @@
         
           <div class="field is-grouped mt-3">
             <div class="control" style="margin: 0 auto;">
-              <button id="add-ingredient-form" type="button" class="button is-link">Agregar otro</button>
-              <button type="submit" class="button is-link">Añadir</button>
+              <button id="add-ingredient-form" type="button" class="button is-link mr-3">Agregar</button>
+              <button id="remove-ingredient-form" type="button" class="button is-link ml-3">Quitar</button><br><br>
+            </div>
+            <div class="control" style="margin: 0 auto;">
+              <button type="submit" class="button is-info">Añadir</button>
             </div>
           </div>
         </form>
-        
       </div>
     </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      $('.ingredient-select').select2(); // ponemos el select2 en los existentes
       const container = document.getElementById('ingredients-container');
       const addIngredientButton = document.getElementById('add-ingredient-form');
+      const removeIngredientButton = document.getElementById('remove-ingredient-form');
       let ingredientIndex = 1;
   
       addIngredientButton.addEventListener('click', function() {
@@ -115,7 +117,11 @@
               <div class="field">
                 <label class="label">Ingrediente</label>
                 <div class="control">
-                  <input class="input" type="text" name="ingredientes[${ingredientIndex}][id_ingrediente]" list="ingredientes-list" />
+                  <select class="ingredient-select" name="ingredientes[${ingredientIndex}][id_ingrediente]" style="width: 100%;">
+                    {% for ingrediente in ingredientes %}
+                      <option value="{{ ingrediente.id_ingrediente }}">{{ ingrediente.nombre_ingrediente }}</option>
+                    {% endfor %}
+                  </select>
                 </div>
               </div>
             </div>
@@ -131,7 +137,25 @@
         `;
   
         container.appendChild(newIngredientRow);
+        // Inicializar Select2 en el nuevo select
+        $(newIngredientRow).find('.ingredient-select').select2();
         ingredientIndex++;
+      });
+
+      removeIngredientButton.addEventListener('click', function() {
+        newIngredientRow.classList.remove('ingredient-row');
+
+        ingredientIndex--;
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        const $notification = $delete.parentNode;
+    
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification);
+        });
       });
     });
   </script>  

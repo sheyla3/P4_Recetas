@@ -73,20 +73,3 @@ class ComentarioForm(forms.ModelForm):
             'comentario': forms.Textarea(attrs={'class': 'textarea', 'rows': '2'}),
             'calificacion': forms.RadioSelect()
         }
-        
-"""
-class AdminLoginForm(forms.Form):
-    usuario = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'input'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input'}))
-
-    def clean(self):
-        usuario = self.cleaned_data.get('usuario')
-        password = self.cleaned_data.get('contrasena')
-        try:
-            admin_user = Admin.objects.get(usuario__correo=usuario)
-            if not admin_user.check_password(password):
-                raise forms.ValidationError("Usuario o contraseña incorrectos")
-        except Admin.DoesNotExist:
-            raise forms.ValidationError("Usuario o contraseña incorrectos")
-        return self.cleaned_data
-"""

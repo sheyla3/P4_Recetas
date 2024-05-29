@@ -1,0 +1,110 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Añadir Ingredientes
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  <style>
+    body {
+      background-color: #6CF194;
+    }
+  </style>
+  <div class="container mb-5">
+    <div class="box mt-5 mx-5">
+      <div class="mb-3">
+        <ul class="steps has-content-centered">
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 1</p>
+              <p>Datos de la receta</p>
+            </div>
+          </li>
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 2</p>
+              <p>Comprobacion de ingredientes</p>
+            </div>
+          </li>
+          <li class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 3</p>
+              <p>Añadir ingredientes a la receta</p>
+            </div>
+          </li>
+          <li class="steps-segment is-active">
+            <span class="steps-marker"></span>
+            <div class="steps-content">
+              <p class="is-size-4">Paso 4</p>
+              <p>Añadir fotos</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mt-6">
+        {% if messages %}
+          <div class="notification is-warning is-light">
+            <button class="delete"></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <img id="imgPreview">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" id="{{ form.id_receta.name }}" name="{{ form.id_receta.name }}" value="{{ ultima_receta_id }}" />
+          <div class="file has-name is-fullwidth">
+            <label class="file-label">
+              <input class="file-input" type="file" id="{{ form.foto.name }}" name="{{ form.foto.name }}" onchange="previewImage(event, '#imgPreview')" />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label"> Elige una foto</span>
+              </span>
+              <span class="file-name"> png / jpg / svg / ... </span>
+            </label>
+          </div>
+        
+          <div class="field is-grouped mt-3">
+            <div class="control" style="margin: 0 auto;">
+              <button type="submit" class="button is-info">Añadir</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function previewImage(event, querySelector){
+      //Recuperamos el input que desencadeno la acción
+      const input = event.target;
+      //Recuperamos la etiqueta img donde cargaremos la imagen
+      $imgPreview = document.querySelector(querySelector);
+      // Verificamos si existe una imagen seleccionada
+      if(!input.files.length) return
+      //Recuperamos el archivo subido
+      file = input.files[0];
+      //Creamos la url
+      objectURL = URL.createObjectURL(file);
+      //Modificamos el atributo src de la etiqueta img
+      $imgPreview.src = objectURL;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+          const $notification = $delete.parentNode;
+      
+          $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification);
+          });
+        });
+    });
+  </script>  
+{% endblock %}

@@ -168,48 +168,52 @@ def comprobacionIng(request):
 
 @login_required
 def anadirIng(request):
-    if 'ultima_receta' in request.session:
-        id_ultima_receta = request.session['ultima_receta']
-    else:
-        id_ultima_receta = Receta.objects.last()
+    ultima_receta = Receta.objects.filter(autor=request.user).latest('fecha_subida')
+    ultima_receta_id = ultima_receta.id_receta
+
     if request.method == 'POST':
         id_receta = request.POST.get('id_receta')
         ingredientes_data = request.POST.dict()
-        
-        ingredientes = []
+        ingredientes = {}
         for key, value in ingredientes_data.items():
             if key.startswith('ingredientes'):
-                _, index, field = key.split('[')[-1].strip(']').split('][')
-                if field == 'id_ingrediente':
-                    ingredientes.append({'id_ingrediente': value})
-                elif field == 'cantidad':
-                    ingredientes[-1]['cantidad'] = value
+                parts = key.split('[')
+                index = parts[1].strip(']')
+                field = parts[2].strip(']')
 
-        for ingrediente in ingredientes:
+                if index not in ingredientes:
+                    ingredientes[index] = {}
+                ingredientes[index][field] = value
+
+        for ingrediente in ingredientes.values():
             id_ingrediente = ingrediente.get('id_ingrediente')
             cantidad = ingrediente.get('cantidad')
 
             if id_ingrediente and cantidad:
                 IngredienteReceta.objects.create(
-                    id_receta=id_receta,
-                    id_ingrediente=id_ingrediente,
+                    id_receta_id=id_receta,
+                    id_ingrediente_id=id_ingrediente,
                     cantidad=cantidad
                 )
+        messages.success(request, 'Ingredientes guardados correctamente')
         return redirect('anadirFoto')
 
     ingredientes = Ingrediente.objects.all()
-    return render(request, 'anadirIng.html', {'ingredientes': ingredientes, 'form': AnadirIngrRecetaForm(), 'id_ultima_receta': id_ultima_receta })
+    return render(request, 'anadirIng.html', {'ingredientes': ingredientes, 'form': AnadirIngrRecetaForm(), 'ultima_receta_id': ultima_receta_id })
 
 @login_required
 def anadirFoto(request):
-    if 'ultima_receta' in request.session:
-        id_ultima_receta = request.session['ultima_receta']
-    else:
-        id_ultima_receta = Receta.objects.last()
+    ultima_receta = Receta.objects.filter(autor=request.user).latest('fecha_subida')
+    ultima_receta_id = ultima_receta.id_receta
     if request.method == 'POST':
-        
+        id_receta = request.POST.get('id_receta')
+        foto = request.FILES.get('foto')
+        Foto.objects.create(
+            id_receta_id=id_receta,
+            foto=foto
+        )
         return redirect('receta')
-    return render(request, 'anadirFoto.html', {'form': AnadirFotoForm(), 'id_ultima_receta': id_ultima_receta })
+    return render(request, 'anadirFoto.html', {'form': AnadirFotoForm(), 'ultima_receta_id': ultima_receta_id })
 
 @login_required
 def lista(request):
