@@ -6,11 +6,46 @@
 
 {% block content %}
   {% load static %}
-  <h1>Eliminar Lista</h1>
-    <p>¿Estás seguro que deseas eliminar la lista "{{ lista.lista }}"?</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Eliminar</button>
-    </form>
-    <a href="{% url 'lista' %}">Volver</a>
+  <style>
+    body {
+      background-color: #f18290;
+    }
+  </style>
+  <div class="container mb-5">
+    <div class="box mt-5 mx-5">
+      <div class=" mt-2" style="margin: 0 auto;">
+        <h1 class="title is-4">¿Estás seguro que deseas eliminar la lista?</h1>
+      </div>
+      <div class="mt-6">
+        {% if messages %}
+          <div class="notification is-warning is-light">
+            <button class="delete"></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="POST">
+          {% csrf_token %}
+          <div class="field is-grouped">
+            <div class="control mt-4" style="margin: 0 auto;">
+              <button type="submit" class="button is-danger">Si</button>
+              <a href="{% url 'lista' %}" class="button is-success">No</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      ;(document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        const $notification = $delete.parentNode
+    
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification)
+        })
+      })
+    })
+  </script>
 {% endblock %}

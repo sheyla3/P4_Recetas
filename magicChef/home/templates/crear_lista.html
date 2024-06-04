@@ -6,11 +6,45 @@
 
 {% block content %}
   {% load static %}
-  <h1>Crear Nueva Lista</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Crear</button>
-  </form>
-  <a href="{% url 'lista' %}">Volver</a>
+  <style>
+    body {
+      background-color: #6CF194;
+    }
+  </style>
+  <div class="container mb-5">
+    <div class="box mt-5 mx-5">
+      <h1 class="title is-1">Crear nueva lista</h1>
+      <div class="mt-6">
+        {% if messages %}
+          <div class="notification is-warning is-light">
+            <button class="delete"></button>
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="field is-grouped">
+            <div class="control mt-4" style="margin: 0 auto;">
+              <button type="submit" class="button is-link">Crear</button>
+              <a href="{% url 'lista' %}" class="button is-info">Volver</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      ;(document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        const $notification = $delete.parentNode
+    
+        $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification)
+        })
+      })
+    })
+  </script>
 {% endblock %}

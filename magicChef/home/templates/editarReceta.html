@@ -1,0 +1,191 @@
+{% extends 'core/baseUser.html' %}
+
+{% block title %}
+  Recetas
+{% endblock %}
+
+{% block content %}
+  {% load static %}
+  {% load media %}
+  <style>
+    body {
+      background-color: #F8D662;
+    }
+  </style>
+  <div class="container my-5">
+    <div class="columns is-desktop">
+        <div class="column">
+            <div class="box">
+              <h1 class="title is-3">Receta</h1>
+              <div class="mt-6">
+                {% if messages %}
+                  <div class="notification is-warning is-light">
+                    <button class="delete"></button>
+                    {% for message in messages %}
+                      {{ message }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <form method="POST">
+                  {% csrf_token %}
+                  <div class="field">
+                    {{ form.titulo.label_tag }}
+                    <div class="control">{{ form.titulo }}</div>
+                    {% if form.titulo.errors %}
+                      <p class="help is-danger is-dark">{{ form.titulo.errors|first }}</p>
+                    {% endif %}
+                  </div>
+                  <div class="field">
+                    {{ form.descripcion.label_tag }}
+                    <div class="control">{{ form.descripcion }}</div>
+                    {% if form.descripcion.errors %}
+                      <p class="help is-danger is-dark">{{ form.descripcion.errors|first }}</p>
+                    {% endif %}
+                  </div>
+                  <div class="field">
+                    {{ form.tipo.label_tag }}
+                    <div class="control">
+                      <div class="select">{{ form.tipo }}</div>
+                    </div>
+                    {% if form.tipo.errors %}
+                      <p class="help is-danger is-dark">{{ form.tipo.errors|first }}</p>
+                    {% endif %}
+                  </div>
+                  <div class="field">
+                    {{ form.pasos.label_tag }}
+                    <div class="control">{{ form.pasos }}</div>
+                    {% if form.pasos.errors %}
+                      <p class="help is-danger is-dark">{{ form.pasos.errors|first }}</p>
+                    {% endif %}
+                  </div>
+                  <div class="field is-grouped">
+                    <div class="control" style="margin: 0 auto;">
+                      <button type="submit" class="button is-link">Guardar</button>
+                    </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <h1 class="title is-3">Foto</h1>
+            <img src="{% media {{ fotos }} %}" alt="logo magic chef" width="auto" height="auto" />
+            <div class="mt-6">
+              {% if messages %}
+                <div class="notification is-warning is-light">
+                  <button class="delete"></button>
+                  {% for message in messages %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <img id="imgPreview">
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" id="{{ form.id_receta.name }}" name="{{ form.id_receta.name }}" value="{{ ultima_receta_id }}" />
+                <div class="file has-name is-fullwidth">
+                  <label class="file-label">
+                    <input class="file-input" type="file" id="{{ form.foto.name }}" name="{{ form.foto.name }}" onchange="previewImage(event, '#imgPreview')" />
+                    <span class="file-cta">
+                      <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span>
+                      <span class="file-label"> Elige una foto</span>
+                    </span>
+                    <span class="file-name"> png / jpg / svg / ... </span>
+                  </label>
+                </div>
+              
+                <div class="field is-grouped mt-3">
+                  <div class="control" style="margin: 0 auto;">
+                    <button type="submit" class="button is-info">Añadir</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="box">
+            <h1 class="title is-3">Ingredientes</h1>
+            <div class="table-container">
+              <table class="table is-hoverable is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for ingredientes in ingredientes %}
+                    <tr>
+                      <th>{{ ingredientes.id_ingrediente.nombre_ingrediente }}</th>
+                      <th>{{ ingredientes.cantidad }}</th>
+                      <th>
+                        <a href="{% url 'eliminarIng_Rec' ingredientes.id_ingrediente_receta %}" class="button is-danger">
+                          <span class="icon is-medium">
+                            <i class="fas fa-trash"></i>
+                          </span>
+                        </a>
+                      </th>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-6">
+              {% if messages %}
+                <div class="notification is-warning is-light">
+                  <button class="delete"></button>
+                  {% for message in messages %}
+                    {{ message }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <form method="POST" id="ingredient-forms-container">
+                {% csrf_token %}
+                <input type="hidden" id="{{ form.id_receta.name }}" name="{{ form.id_receta.name }}" value="{{ ultima_receta_id }}" />
+                <div id="ingredients-container">
+                  <div class="ingredient-row">
+                    <div class="columns">
+                      <div class="column">
+                        <div class="field">
+                          <label class="label">Ingredientes para la receta: {{ ultima_receta.titulo }}</label>
+                          <div class="control">
+                            <select class="ingredient-select select" name="ingredientes[0][id_ingrediente]" style="width: 100%;">
+                              {% for ingrediente in ingredientes %}
+                                <option value="{{ ingrediente.id_ingrediente }}">{{ ingrediente.nombre_ingrediente }}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column">
+                        <div class="field">
+                          <label class="label">Cantidad</label>
+                          <div class="control">
+                            <input type="text" class="input" name="ingredientes[0][cantidad]" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="field is-grouped mt-3">
+                  <div class="control" style="margin: 0 auto;">
+                    <button id="add-ingredient-form" type="button" class="button is-link mr-3">Agregar</button>
+                    <button id="remove-ingredient-form" type="button" class="button is-link ml-3">Quitar</button><br><br>
+                  </div>
+                  <div class="control" style="margin: 0 auto;">
+                    <button type="submit" class="button is-info">Añadir</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+{% endblock %}

@@ -1,34 +1,16 @@
 {% load static %}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
-  
-    if ($navbarBurgers.length > 0) {
-      $navbarBurgers.forEach(function ($el) {
-        $el.addEventListener('click', function () {
-          var target = $el.dataset.target
-          var $target = document.getElementById(target)
-  
-          $el.classList.toggle('is-active')
-          $target.classList.toggle('is-active')
-        })
-      })
-    }
-  })
-</script>
 <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 <nav class="navbar container is-fluid" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="logo magic chef" width="auto" height="auto" /></a>
-    <div class="navbar-burger js-burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
   </div>
-
-  <div id="navbarExampleTransparentExample" class="navbar-menu">
+  <div class="navbar-menu" id="navMenu">
     <div class="navbar-start">
       <div class="navbar-item has-dropdown is-hoverable is-mega">
         <div class="navbar-link">Recetas</div>
@@ -87,7 +69,7 @@
       </div>
     </div>
     <div class="navbar-end">
-      <div class="navbar-item has-dropdown is-hoverable">
+      <div class="navbar-item has-dropdown is-right is-hoverable">
         <p class="navbar-link"> <img src="{% static 'img/menuA.svg' %}" alt="menu" width="auto" height="auto" /> </p>
         <div class="navbar-dropdown is-boxed">
           <a class="navbar-item" href="{% url 'perfil' %}"> Perfil </a>
@@ -99,3 +81,20 @@
     </div>
   </div>
 </nav>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    // Add a click event on each of them
+    $navbarBurgers.forEach( el => {
+      el.addEventListener('click', () => {
+        // Get the target from the "data-target" attribute
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        el.classList.toggle('is-active');
+        $target.classList.toggle('is-active');
+      });
+    });
+  });
+</script>

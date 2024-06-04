@@ -10,7 +10,7 @@ from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+
 def recetasHome(request):
     user = request.user
     recetas = Receta.objects.all()
@@ -110,44 +110,49 @@ def crearReceta(request):
 @login_required
 def editarReceta(request, id_receta):
     user = request.user
-    fechaActual = datetime.date.today()
-    
+    receta_edit = get_object_or_404(Receta, id_receta=id_receta)
+
+    ingredientes = IngredienteReceta.objects.filter(id_receta=id_receta)
+    fotos = Foto.objects.filter(id_receta=id_receta)
+
     if request.method == 'POST':
-        form = CrearRecetaForm(request.POST)
-        if form.is_valid():
-            receta = form.save(commit=False)
-            receta.autor = user.apodo  # O el campo correspondiente del usuario
-            receta.fecha_subida = fechaActual
-            receta.save()
-            request.session['ultima_receta'] = receta.id_receta
-            return redirect('comprobacionIng')
-        else:
-            messages.error(request, 'Error al crear receta')
+        formR = CrearRecetaForm(request.POST, instance=receta_edit)
+        formF = AnadirFotoForm(request.POST, request.FILES)
+        formI = AnadirIngrRecetaForm(request.POST)
+
+        if formR.is_valid():
+            formR.save()
+        
+        if formF.is_valid():
+            foto_instance = formF.save(commit=False)
+            foto_instance.id_receta = receta_edit
+            foto_instance.save()
+
+        if formI.is_valid():
+            ingrediente_instance = formI.save(commit=False)
+            ingrediente_instance.id_receta = receta_edit
+            ingrediente_instance.save()
+
+        return redirect('nombre_de_tu_vista_de_exito')
+
     else:
-        form = CrearRecetaForm(initial={'autor': user.apodo, 'fecha_subida': fechaActual, 'activo': True})
-    
-    return render(request, 'recetas.html', {'form': form, 'user': user, 'fechaActual': fechaActual})
+        formR = CrearRecetaForm(instance=receta_edit)
+        formF = AnadirFotoForm()
+        formI = AnadirIngrRecetaForm()
+
+    context = {
+        'receta_edit': receta_edit, 'ingredientes': ingredientes,
+        'fotos': fotos, 'formR': formR, 'formF': formF, 'formI': formI
+    }
+    return render(request, 'editarReceta.html', context)
 
 @login_required
 def eliminarReceta(request, id_receta):
-    user = request.user
-    fechaActual = datetime.date.today()
-    
+    receta = get_object_or_404(Receta, id_receta=id_receta, autor=request.user)
     if request.method == 'POST':
-        form = CrearRecetaForm(request.POST)
-        if form.is_valid():
-            receta = form.save(commit=False)
-            receta.autor = user.apodo  # O el campo correspondiente del usuario
-            receta.fecha_subida = fechaActual
-            receta.save()
-            request.session['ultima_receta'] = receta.id_receta
-            return redirect('comprobacionIng')
-        else:
-            messages.error(request, 'Error al crear receta')
-    else:
-        form = CrearRecetaForm(initial={'autor': user.apodo, 'fecha_subida': fechaActual, 'activo': True})
-    
-    return render(request, 'recetas.html', {'form': form, 'user': user, 'fechaActual': fechaActual})
+        lista.delete()
+        return redirect('receta')
+    return render(request, 'eliminar_lista.html', {'lista': lista})
 
 @login_required
 def comprobacionIng(request):
