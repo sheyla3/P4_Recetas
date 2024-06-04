@@ -123,10 +123,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+# Imagenes
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # URL base para servir archivos multimedia
-MEDIA_URL = '/media/'
-
 # Directorio raíz para los archivos multimedia
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type

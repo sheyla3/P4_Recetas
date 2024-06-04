@@ -111,8 +111,8 @@ def crearReceta(request):
 def editarReceta(request, id_receta):
     user = request.user
     receta_edit = get_object_or_404(Receta, id_receta=id_receta)
-
-    ingredientes = IngredienteReceta.objects.filter(id_receta=id_receta)
+    ingredientes = Ingrediente.objects.all()
+    ingredientesr = IngredienteReceta.objects.filter(id_receta=id_receta)
     fotos = Foto.objects.filter(id_receta=id_receta)
 
     if request.method == 'POST':
@@ -133,7 +133,7 @@ def editarReceta(request, id_receta):
             ingrediente_instance.id_receta = receta_edit
             ingrediente_instance.save()
 
-        return redirect('nombre_de_tu_vista_de_exito')
+        return redirect('receta')
 
     else:
         formR = CrearRecetaForm(instance=receta_edit)
@@ -142,6 +142,7 @@ def editarReceta(request, id_receta):
 
     context = {
         'receta_edit': receta_edit, 'ingredientes': ingredientes,
+        'id_receta' : id_receta, 'ingredientesr' : ingredientesr,
         'fotos': fotos, 'formR': formR, 'formF': formF, 'formI': formI
     }
     return render(request, 'editarReceta.html', context)
@@ -149,10 +150,14 @@ def editarReceta(request, id_receta):
 @login_required
 def eliminarReceta(request, id_receta):
     receta = get_object_or_404(Receta, id_receta=id_receta, autor=request.user)
-    if request.method == 'POST':
-        lista.delete()
-        return redirect('receta')
-    return render(request, 'eliminar_lista.html', {'lista': lista})
+    receta.delete()
+    return redirect('receta')
+
+@login_required
+def eliminarIng_Rec(request, id):
+    ingrediente = get_object_or_404(IngredienteReceta, id_ingrediente_receta=id)
+    ingrediente.delete()
+    return redirect('editarReceta')
 
 @login_required
 def comprobacionIng(request):

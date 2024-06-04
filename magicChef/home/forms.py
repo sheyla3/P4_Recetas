@@ -53,6 +53,7 @@ class AnadirIngrRecetaForm(forms.ModelForm):
     class Meta:
         model = IngredienteReceta
         fields = ['id_receta', 'id_ingrediente', 'cantidad']
+        
 
 class AnadirFotoForm(forms.ModelForm):
     class Meta:
